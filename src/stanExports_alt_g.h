@@ -79,7 +79,7 @@ public:
             vals_i__ = context__.vals_i("K");
             pos__ = 0;
             K = vals_i__[pos__++];
-            check_greater_or_equal(function__, "K", K, 0);
+            check_greater_or_equal(function__, "K", K, 2);
             current_statement_begin__ = 3;
             validate_non_negative_index("x", "(K + 1)", (K + 1));
             context__.validate_dims("data initialization", "x", "int", context__.to_vec((K + 1)));
