@@ -42,7 +42,7 @@ class model_alt_g
 private:
         int K;
         std::vector<int> x;
-        vector_d alpha;
+        vector_d beta;
 public:
     model_alt_g(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
@@ -91,16 +91,16 @@ public:
                 x[k_0__] = vals_i__[pos__++];
             }
             current_statement_begin__ = 4;
-            validate_non_negative_index("alpha", "(K + 1)", (K + 1));
-            context__.validate_dims("data initialization", "alpha", "vector_d", context__.to_vec((K + 1)));
-            alpha = Eigen::Matrix<double, Eigen::Dynamic, 1>((K + 1));
-            vals_r__ = context__.vals_r("alpha");
+            validate_non_negative_index("beta", "(K + 1)", (K + 1));
+            context__.validate_dims("data initialization", "beta", "vector_d", context__.to_vec((K + 1)));
+            beta = Eigen::Matrix<double, Eigen::Dynamic, 1>((K + 1));
+            vals_r__ = context__.vals_r("beta");
             pos__ = 0;
-            size_t alpha_j_1_max__ = (K + 1);
-            for (size_t j_1__ = 0; j_1__ < alpha_j_1_max__; ++j_1__) {
-                alpha(j_1__) = vals_r__[pos__++];
+            size_t beta_j_1_max__ = (K + 1);
+            for (size_t j_1__ = 0; j_1__ < beta_j_1_max__; ++j_1__) {
+                beta(j_1__) = vals_r__[pos__++];
             }
-            check_greater_or_equal(function__, "alpha", alpha, 0);
+            check_greater_or_equal(function__, "beta", beta, 0);
             // initialize transformed data variables
             // execute transformed data statements
             // validate transformed data
@@ -178,7 +178,7 @@ public:
                 q = in__.simplex_constrain((K + 1));
             // model body
             current_statement_begin__ = 12;
-            lp_accum__.add(dirichlet_log(q, alpha));
+            lp_accum__.add(dirichlet_log(q, beta));
             current_statement_begin__ = 13;
             lp_accum__.add(multinomial_log(x, q));
         } catch (const std::exception& e) {

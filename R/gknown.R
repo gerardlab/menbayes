@@ -5,18 +5,24 @@
 #' Marginal likelihood under alternative when genotypes are known
 #'
 #' @param x The genotype counts
-#' @param alpha The prior hyperparameters
+#' @param beta The prior hyperparameters
 #' @param lg A logical. Should we log the marginal likelihood or not?
 #' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
 #'
 #' @return The mariginal likelihood.
 #'
 #' @author David Gerard
+#'
+#' @examples
+#' x <- c(1, 2, 7, 3, 3)
+#' beta <- rep(1, 5)
+#' marg_alt_g(x = x, beta = beta, chains = 1)
+#'
 #' @export
-marg_alt_g <- function(x, alpha, lg = TRUE, ...) {
+marg_alt_g <- function(x, beta, lg = TRUE, ...) {
   ploidy <- length(x) - 1
-  stopifnot(length(x) == length(alpha))
-  stan_dat <- list(K = ploidy, x = x, alpha = alpha)
+  stopifnot(length(x) == length(beta))
+  stan_dat <- list(K = ploidy, x = x, beta = beta)
   stan_out <- rstan::sampling(object = stanmodels$alt_g,
                               data = stan_dat,
                               verbose = FALSE,

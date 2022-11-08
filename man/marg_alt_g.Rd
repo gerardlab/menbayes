@@ -4,12 +4,12 @@
 \alias{marg_alt_g}
 \title{Marginal likelihood under alternative when genotypes are known}
 \usage{
-marg_alt_g(x, alpha, lg = TRUE, ...)
+marg_alt_g(x, beta, lg = TRUE, ...)
 }
 \arguments{
 \item{x}{The genotype counts}
 
-\item{alpha}{The prior hyperparameters}
+\item{beta}{The prior hyperparameters}
 
 \item{lg}{A logical. Should we log the marginal likelihood or not?}
 
@@ -20,6 +20,12 @@ The mariginal likelihood.
 }
 \description{
 Marginal likelihood under alternative when genotypes are known
+}
+\examples{
+x <- c(1, 2, 7, 3, 3)
+beta <- rep(1, 5)
+marg_alt_g(x = x, beta = beta, chains = 1)
+
 }
 \author{
 David Gerard

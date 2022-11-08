@@ -7,7 +7,8 @@ Authors@R:
              comment = c(ORCID = "0000-0001-9450-5023"))
      )
 Description: Provides a suite of methods for Bayesian tests for Mendelian
-    segregation in experimental autopolyploid populations.
+    segregation in experimental autopolyploid populations. This is under
+    different assumptions of meiosis.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

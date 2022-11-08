@@ -6,7 +6,7 @@
 \alias{menbayes-package}
 \title{menbayes: Bayesian Tests for Mendelian Segregation in Autopolyploids}
 \description{
-Provides a suite of methods for Bayesian tests for Mendelian segregation in experimental autopolyploid populations.
+Provides a suite of methods for Bayesian tests for Mendelian segregation in experimental autopolyploid populations. This is under different assumptions of meiosis.
 }
 \author{
 \strong{Maintainer}: David Gerard \email{gerard.1787@gmail.com} (\href{https://orcid.org/0000-0001-9450-5023}{ORCID})
