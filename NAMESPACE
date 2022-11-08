@@ -2,6 +2,7 @@
 
 export(marg_alt_g)
 export(marg_alt_gl)
+export(marg_f1_g4)
 import(Rcpp)
 import(methods)
 importFrom(rstan,sampling)
