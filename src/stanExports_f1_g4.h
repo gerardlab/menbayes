@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_f1_g4");
-    reader.add_event(90, 88, "end", "model_f1_g4");
+    reader.add_event(84, 82, "end", "model_f1_g4");
     return reader;
 }
 template <typename T0__>
@@ -329,7 +329,7 @@ public:
         double alpha(0);
         alpha = vals_r__[pos__++];
         try {
-            writer__.scalar_lub_unconstrain(0.0, drbound, alpha);
+            writer__.scalar_lub_unconstrain(0, drbound, alpha);
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable alpha: ") + e.what()), current_statement_begin__, prog_reader__());
         }
@@ -362,17 +362,17 @@ public:
             local_scalar_t__ alpha;
             (void) alpha;  // dummy to suppress unused var warning
             if (jacobian__)
-                alpha = in__.scalar_lub_constrain(0.0, drbound, lp__);
+                alpha = in__.scalar_lub_constrain(0, drbound, lp__);
             else
-                alpha = in__.scalar_lub_constrain(0.0, drbound);
-            // transformed parameters
+                alpha = in__.scalar_lub_constrain(0, drbound);
+            // model body
+            {
             current_statement_begin__ = 66;
             validate_non_negative_index("glmat", "5", 5);
             validate_non_negative_index("glmat", "5", 5);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, Eigen::Dynamic> glmat(5, 5);
             stan::math::initialize(glmat, DUMMY_VAR__);
             stan::math::fill(glmat, DUMMY_VAR__);
-            // transformed parameters block statements
             current_statement_begin__ = 67;
             for (int i = 1; i <= 5; ++i) {
                 {
@@ -384,53 +384,23 @@ public:
                 current_statement_begin__ = 69;
                 stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
                 current_statement_begin__ = 70;
-                if (pstream__) {
-                    stan_print(pstream__,"i: ");
-                    stan_print(pstream__,i);
-                    *pstream__ << std::endl;
-                }
-                current_statement_begin__ = 71;
-                if (pstream__) {
-                    stan_print(pstream__,"p1: ");
-                    stan_print(pstream__,p1);
-                    *pstream__ << std::endl;
-                }
-                current_statement_begin__ = 72;
                 for (int j = 1; j <= 5; ++j) {
                     {
-                    current_statement_begin__ = 73;
+                    current_statement_begin__ = 71;
                     validate_non_negative_index("p2", "3", 3);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
                     stan::math::initialize(p2, DUMMY_VAR__);
                     stan::math::fill(p2, DUMMY_VAR__);
-                    current_statement_begin__ = 74;
+                    current_statement_begin__ = 72;
                     validate_non_negative_index("q", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
                     stan::math::initialize(q, DUMMY_VAR__);
                     stan::math::fill(q, DUMMY_VAR__);
-                    current_statement_begin__ = 75;
+                    current_statement_begin__ = 73;
                     stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
-                    current_statement_begin__ = 76;
-                    if (pstream__) {
-                        stan_print(pstream__,"j: ");
-                        stan_print(pstream__,j);
-                        *pstream__ << std::endl;
-                    }
-                    current_statement_begin__ = 77;
-                    if (pstream__) {
-                        stan_print(pstream__,"p2: ");
-                        stan_print(pstream__,p2);
-                        *pstream__ << std::endl;
-                    }
-                    current_statement_begin__ = 78;
+                    current_statement_begin__ = 74;
                     stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
-                    current_statement_begin__ = 79;
-                    if (pstream__) {
-                        stan_print(pstream__,"q: ");
-                        stan_print(pstream__,q);
-                        *pstream__ << std::endl;
-                    }
-                    current_statement_begin__ = 80;
+                    current_statement_begin__ = 75;
                     stan::model::assign(glmat, 
                                 stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                 ((multinomial_log(x, q) + get_base1(p1_gl, i, "p1_gl", 1)) + get_base1(p2_gl, j, "p2_gl", 1)), 
@@ -439,26 +409,23 @@ public:
                 }
                 }
             }
-            // validate transformed parameters
-            const char* function__ = "validate transformed params";
-            (void) function__;  // dummy to suppress unused var warning
-            current_statement_begin__ = 66;
-            size_t glmat_j_1_max__ = 5;
-            size_t glmat_j_2_max__ = 5;
-            for (size_t j_1__ = 0; j_1__ < glmat_j_1_max__; ++j_1__) {
-                for (size_t j_2__ = 0; j_2__ < glmat_j_2_max__; ++j_2__) {
-                    if (stan::math::is_uninitialized(glmat(j_1__, j_2__))) {
-                        std::stringstream msg__;
-                        msg__ << "Undefined transformed parameter: glmat" << "(" << j_1__ << ", " << j_2__ << ")";
-                        stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable glmat: ") + msg__.str()), current_statement_begin__, prog_reader__());
-                    }
-                }
+            current_statement_begin__ = 78;
+            if (pstream__) {
+                stan_print(pstream__,"alpha: ");
+                stan_print(pstream__,alpha);
+                *pstream__ << std::endl;
             }
-            // model body
-            current_statement_begin__ = 86;
+            current_statement_begin__ = 79;
+            if (pstream__) {
+                stan_print(pstream__,"lse: ");
+                stan_print(pstream__,log_sum_exp(glmat));
+                *pstream__ << std::endl;
+            }
+            current_statement_begin__ = 80;
             lp_accum__.add(uniform_log(alpha, 0.0, drbound));
-            current_statement_begin__ = 87;
+            current_statement_begin__ = 81;
             lp_accum__.add(log_sum_exp(glmat));
+            }
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
             // Next line prevents compiler griping about no return
@@ -480,16 +447,11 @@ public:
     void get_param_names(std::vector<std::string>& names__) const {
         names__.resize(0);
         names__.push_back("alpha");
-        names__.push_back("glmat");
     }
     void get_dims(std::vector<std::vector<size_t> >& dimss__) const {
         dimss__.resize(0);
         std::vector<size_t> dims__;
         dims__.resize(0);
-        dimss__.push_back(dims__);
-        dims__.resize(0);
-        dims__.push_back(5);
-        dims__.push_back(5);
         dimss__.push_back(dims__);
     }
     template <typename RNG>
@@ -506,7 +468,7 @@ public:
         static const char* function__ = "model_f1_g4_namespace::write_array";
         (void) function__;  // dummy to suppress unused var warning
         // read-transform, write parameters
-        double alpha = in__.scalar_lub_constrain(0.0, drbound);
+        double alpha = in__.scalar_lub_constrain(0, drbound);
         vars__.push_back(alpha);
         double lp__ = 0.0;
         (void) lp__;  // dummy to suppress unused var warning
@@ -515,94 +477,7 @@ public:
         (void) DUMMY_VAR__;  // suppress unused var warning
         if (!include_tparams__ && !include_gqs__) return;
         try {
-            // declare and define transformed parameters
-            current_statement_begin__ = 66;
-            validate_non_negative_index("glmat", "5", 5);
-            validate_non_negative_index("glmat", "5", 5);
-            Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> glmat(5, 5);
-            stan::math::initialize(glmat, DUMMY_VAR__);
-            stan::math::fill(glmat, DUMMY_VAR__);
-            // do transformed parameters statements
-            current_statement_begin__ = 67;
-            for (int i = 1; i <= 5; ++i) {
-                {
-                current_statement_begin__ = 68;
-                validate_non_negative_index("p1", "3", 3);
-                Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
-                stan::math::initialize(p1, DUMMY_VAR__);
-                stan::math::fill(p1, DUMMY_VAR__);
-                current_statement_begin__ = 69;
-                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
-                current_statement_begin__ = 70;
-                if (pstream__) {
-                    stan_print(pstream__,"i: ");
-                    stan_print(pstream__,i);
-                    *pstream__ << std::endl;
-                }
-                current_statement_begin__ = 71;
-                if (pstream__) {
-                    stan_print(pstream__,"p1: ");
-                    stan_print(pstream__,p1);
-                    *pstream__ << std::endl;
-                }
-                current_statement_begin__ = 72;
-                for (int j = 1; j <= 5; ++j) {
-                    {
-                    current_statement_begin__ = 73;
-                    validate_non_negative_index("p2", "3", 3);
-                    Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
-                    stan::math::initialize(p2, DUMMY_VAR__);
-                    stan::math::fill(p2, DUMMY_VAR__);
-                    current_statement_begin__ = 74;
-                    validate_non_negative_index("q", "5", 5);
-                    Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
-                    stan::math::initialize(q, DUMMY_VAR__);
-                    stan::math::fill(q, DUMMY_VAR__);
-                    current_statement_begin__ = 75;
-                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
-                    current_statement_begin__ = 76;
-                    if (pstream__) {
-                        stan_print(pstream__,"j: ");
-                        stan_print(pstream__,j);
-                        *pstream__ << std::endl;
-                    }
-                    current_statement_begin__ = 77;
-                    if (pstream__) {
-                        stan_print(pstream__,"p2: ");
-                        stan_print(pstream__,p2);
-                        *pstream__ << std::endl;
-                    }
-                    current_statement_begin__ = 78;
-                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
-                    current_statement_begin__ = 79;
-                    if (pstream__) {
-                        stan_print(pstream__,"q: ");
-                        stan_print(pstream__,q);
-                        *pstream__ << std::endl;
-                    }
-                    current_statement_begin__ = 80;
-                    stan::model::assign(glmat, 
-                                stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
-                                ((multinomial_log(x, q) + get_base1(p1_gl, i, "p1_gl", 1)) + get_base1(p2_gl, j, "p2_gl", 1)), 
-                                "assigning variable glmat");
-                    }
-                }
-                }
-            }
             if (!include_gqs__ && !include_tparams__) return;
-            // validate transformed parameters
-            const char* function__ = "validate transformed params";
-            (void) function__;  // dummy to suppress unused var warning
-            // write transformed parameters
-            if (include_tparams__) {
-                size_t glmat_j_2_max__ = 5;
-                size_t glmat_j_1_max__ = 5;
-                for (size_t j_2__ = 0; j_2__ < glmat_j_2_max__; ++j_2__) {
-                    for (size_t j_1__ = 0; j_1__ < glmat_j_1_max__; ++j_1__) {
-                        vars__.push_back(glmat(j_1__, j_2__));
-                    }
-                }
-            }
             if (!include_gqs__) return;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -639,15 +514,6 @@ public:
         param_names__.push_back(param_name_stream__.str());
         if (!include_gqs__ && !include_tparams__) return;
         if (include_tparams__) {
-            size_t glmat_j_2_max__ = 5;
-            size_t glmat_j_1_max__ = 5;
-            for (size_t j_2__ = 0; j_2__ < glmat_j_2_max__; ++j_2__) {
-                for (size_t j_1__ = 0; j_1__ < glmat_j_1_max__; ++j_1__) {
-                    param_name_stream__.str(std::string());
-                    param_name_stream__ << "glmat" << '.' << j_1__ + 1 << '.' << j_2__ + 1;
-                    param_names__.push_back(param_name_stream__.str());
-                }
-            }
         }
         if (!include_gqs__) return;
     }
@@ -660,15 +526,6 @@ public:
         param_names__.push_back(param_name_stream__.str());
         if (!include_gqs__ && !include_tparams__) return;
         if (include_tparams__) {
-            size_t glmat_j_2_max__ = 5;
-            size_t glmat_j_1_max__ = 5;
-            for (size_t j_2__ = 0; j_2__ < glmat_j_2_max__; ++j_2__) {
-                for (size_t j_1__ = 0; j_1__ < glmat_j_1_max__; ++j_1__) {
-                    param_name_stream__.str(std::string());
-                    param_name_stream__ << "glmat" << '.' << j_1__ + 1 << '.' << j_2__ + 1;
-                    param_names__.push_back(param_name_stream__.str());
-                }
-            }
         }
         if (!include_gqs__) return;
     }

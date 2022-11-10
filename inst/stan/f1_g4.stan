@@ -55,34 +55,28 @@ data {
   vector[5] p1_gl; // genotype log-likelihoods for parent 1
   vector[5] p2_gl; // genotype log-likelihoods for parent 2
   int x[5]; // genotype counts
-  real drbound; // double reduction bound
+  real drbound; // upper bound of double reduction rate
 }
 
 parameters {
-  real<lower=0.0,upper=drbound> alpha; // double reduction rate
+  real<lower=0,upper=drbound> alpha; // double reduction rate
 }
 
-transformed parameters {
+model {
   matrix[5, 5] glmat;
   for (i in 1:5) {
     vector[3] p1;
     p1 = segfreq4(alpha, i - 1);
-    print("i: ", i);
-    print("p1: ", p1);
     for (j in 1:5) {
       vector[3] p2;
       vector[5] q;
       p2 = segfreq4(alpha, j - 1);
-      print("j: ", j);
-      print("p2: ", p2);
       q = convolve(p1, p2, 4, 3);
-      print("q: ", q);
       glmat[i, j] = multinomial_lpmf(x | q) + p1_gl[i] + p2_gl[j];
     }
   }
-}
-
-model {
+  print("alpha: ", alpha);
+  print("lse: ", log_sum_exp(glmat));
   target += uniform_lpdf(alpha | 0.0, drbound);
   target += log_sum_exp(glmat);
 }

@@ -66,7 +66,8 @@ marg_f1_g4 <- function(x,
   stan_out <- rstan::sampling(object = stanmodels$f1_g4,
                               data = stan_dat,
                               verbose = FALSE,
-                              show_messages = FALSE)
+                              show_messages = FALSE,
+                              init = 0)
   bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
 
   if (lg) {
