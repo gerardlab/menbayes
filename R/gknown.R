@@ -19,7 +19,7 @@
 #' marg_alt_g(x = x, beta = beta, chains = 1)
 #'
 #' @export
-marg_alt_g <- function(x, beta, lg = TRUE, ...) {
+marg_alt_g <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
   ploidy <- length(x) - 1
   stopifnot(length(x) == length(beta))
   stan_dat <- list(K = ploidy, x = x, beta = beta)
@@ -42,32 +42,50 @@ marg_alt_g <- function(x, beta, lg = TRUE, ...) {
 #'
 #' @inheritParams marg_alt_g
 #' @param p1_gl A vector of parent 1's genotype log-likelihoods.
-#' @param p2_gl A vector of parent 2's genotype log-likelihoods
+#' @param p2_gl A vector of parent 2's genotype log-likelihoods.
+#' @param mixprop Mixing proportion with uniform to avoid
+#'     numerical issues in stan.
 #'
 #' @author David Gerard
 #'
 #' @examples
 #' set.seed(1)
 #' q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
-#' x <- c(stats::rmultinom(n = 1, size = 10, prob = q))
+#' q <- runif(5)
+#' q <- q / sum(q)
+#' x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
 #' p1_gl <- rep(log(0.2), 5)
 #' p2_gl <- rep(log(0.2), 5)
+#' mixprop <- 0.001
+#' malt <- marg_alt_g(x, chains = 1)
+#' mnull <- marg_f1_g4(x,
+#'                     chains = 1,
+#'                     p1_gl = c(-10, -10, -1, -10, -10),
+#'                     p2_gl = c(-10, -10, -1, -10, -10))
+#' mnull - malt
 #'
 #' @export
 marg_f1_g4 <- function(x,
                        p1_gl = rep(log(0.2), 5),
                        p2_gl = rep(log(0.2), 5),
+                       mixprop = 0.001,
                        lg = TRUE, ...) {
   stopifnot(length(x) == 5,
             length(p1_gl) == 5,
-            length(p2_gl) == 5)
+            length(p2_gl) == 5,
+            length(mixprop) == 1)
+  stopifnot(mixprop > 0, mixprop <= 1)
   drbound <- hwep::drbounds(ploidy = 4)
-  stan_dat <- list(x = x, drbound = drbound, p1_gl = p1_gl, p2_gl = p2_gl)
+  stan_dat <- list(x = x,
+                   drbound = drbound,
+                   p1_gl = p1_gl,
+                   p2_gl = p2_gl,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$f1_g4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
-                              init = 0)
+                              ...)
   bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
 
   if (lg) {

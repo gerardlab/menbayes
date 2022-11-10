@@ -4,7 +4,7 @@
 \alias{marg_alt_g}
 \title{Marginal likelihood under alternative when genotypes are known}
 \usage{
-marg_alt_g(x, beta, lg = TRUE, ...)
+marg_alt_g(x, beta = rep(1, length(x)), lg = TRUE, ...)
 }
 \arguments{
 \item{x}{The genotype counts}

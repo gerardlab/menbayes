@@ -8,6 +8,7 @@ marg_f1_g4(
   x,
   p1_gl = rep(log(0.2), 5),
   p2_gl = rep(log(0.2), 5),
+  mixprop = 0.001,
   lg = TRUE,
   ...
 )
@@ -17,7 +18,10 @@ marg_f1_g4(
 
 \item{p1_gl}{A vector of parent 1's genotype log-likelihoods.}
 
-\item{p2_gl}{A vector of parent 2's genotype log-likelihoods}
+\item{p2_gl}{A vector of parent 2's genotype log-likelihoods.}
+
+\item{mixprop}{Mixing proportion with uniform to avoid
+numerical issues in stan.}
 
 \item{lg}{A logical. Should we log the marginal likelihood or not?}
 
@@ -29,9 +33,18 @@ Marginal likelihood in F1 population of tetraploids
 \examples{
 set.seed(1)
 q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
-x <- c(stats::rmultinom(n = 1, size = 10, prob = q))
+q <- runif(5)
+q <- q / sum(q)
+x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
 p1_gl <- rep(log(0.2), 5)
 p2_gl <- rep(log(0.2), 5)
+mixprop <- 0.001
+malt <- marg_alt_g(x, chains = 1)
+mnull <- marg_f1_g4(x,
+                    chains = 1,
+                    p1_gl = c(-10, -10, -1, -10, -10),
+                    p2_gl = c(-10, -10, -1, -10, -10))
+mnull - malt
 
 }
 \author{
