@@ -50,6 +50,8 @@ marg_alt_g <- function(x, beta, lg = TRUE, ...) {
 #' set.seed(1)
 #' q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
 #' x <- c(stats::rmultinom(n = 1, size = 10, prob = q))
+#' p1_gl <- rep(log(0.2), 5)
+#' p2_gl <- rep(log(0.2), 5)
 #'
 #' @export
 marg_f1_g4 <- function(x,

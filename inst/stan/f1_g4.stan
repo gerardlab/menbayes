@@ -5,8 +5,8 @@ functions {
   // g parent genotype
   // khalf ploidy / 2 + 1
   // return: gamete frequencies of a parent
-  real[] segfreq4(real alpha, int g) {
-    real p[3];
+  vector segfreq4(real alpha, int g) {
+    vector[3] p;
     if (g == 0) {
       p[1] = 1.0;
       p[2] = 0.0;
@@ -37,7 +37,7 @@ functions {
   // p2 gamete frequencies from parent 2.
   // K ploidy
   // khalf K / 2 + 1 so stan does not complain about integer division
-  vector convolve(real[] p1, real[] p2, int K, int khalf) {
+  vector convolve(vector p1, vector p2, int K, int khalf) {
     vector[K+1] q;
     for (k in 1:(K+1)) {
       int iup = min(k - 1, khalf - 1);
@@ -52,8 +52,8 @@ functions {
 }
 
 data {
-  real p1_gl[5]; // genotype log-likelihoods for parent 1
-  real p2_gl[5]; // genotype log-likelihoods for parent 2
+  vector[5] p1_gl; // genotype log-likelihoods for parent 1
+  vector[5] p2_gl; // genotype log-likelihoods for parent 2
   int x[5]; // genotype counts
   real drbound; // double reduction bound
 }
@@ -65,14 +65,21 @@ parameters {
 transformed parameters {
   matrix[5, 5] glmat;
   for (i in 1:5) {
-    real p1[3] = segfreq4(alpha, i);
+    vector[3] p1;
+    p1 = segfreq4(alpha, i - 1);
+    print("i: ", i);
+    print("p1: ", p1);
     for (j in 1:5) {
-      real p2[3] = segfreq4(alpha, i);
-      vector[5] q = convolve(p1, p2, 4, 3);
+      vector[3] p2;
+      vector[5] q;
+      p2 = segfreq4(alpha, j - 1);
+      print("j: ", j);
+      print("p2: ", p2);
+      q = convolve(p1, p2, 4, 3);
+      print("q: ", q);
       glmat[i, j] = multinomial_lpmf(x | q) + p1_gl[i] + p2_gl[j];
     }
   }
-
 }
 
 model {

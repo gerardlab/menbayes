@@ -33,11 +33,11 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_f1_g4");
-    reader.add_event(83, 81, "end", "model_f1_g4");
+    reader.add_event(90, 88, "end", "model_f1_g4");
     return reader;
 }
 template <typename T0__>
-std::vector<typename boost::math::tools::promote_args<T0__>::type>
+Eigen::Matrix<typename boost::math::tools::promote_args<T0__>::type, Eigen::Dynamic, 1>
 segfreq4(const T0__& alpha,
              const int& g, std::ostream* pstream__) {
     typedef typename boost::math::tools::promote_args<T0__>::type local_scalar_t__;
@@ -51,7 +51,7 @@ segfreq4(const T0__& alpha,
         {
         current_statement_begin__ = 9;
         validate_non_negative_index("p", "3", 3);
-        std::vector<local_scalar_t__  > p(3, local_scalar_t__(DUMMY_VAR__));
+        Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p(3);
         stan::math::initialize(p, DUMMY_VAR__);
         stan::math::fill(p, DUMMY_VAR__);
         current_statement_begin__ = 10;
@@ -148,7 +148,7 @@ segfreq4(const T0__& alpha,
 }
 struct segfreq4_functor__ {
     template <typename T0__>
-        std::vector<typename boost::math::tools::promote_args<T0__>::type>
+        Eigen::Matrix<typename boost::math::tools::promote_args<T0__>::type, Eigen::Dynamic, 1>
     operator()(const T0__& alpha,
              const int& g, std::ostream* pstream__) const {
         return segfreq4(alpha, g, pstream__);
@@ -156,8 +156,8 @@ struct segfreq4_functor__ {
 };
 template <typename T0__, typename T1__>
 Eigen::Matrix<typename boost::math::tools::promote_args<T0__, T1__>::type, Eigen::Dynamic, 1>
-convolve(const std::vector<T0__>& p1,
-             const std::vector<T1__>& p2,
+convolve(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& p1,
+             const Eigen::Matrix<T1__, Eigen::Dynamic, 1>& p2,
              const int& K,
              const int& khalf, std::ostream* pstream__) {
     typedef typename boost::math::tools::promote_args<T0__, T1__>::type local_scalar_t__;
@@ -214,8 +214,8 @@ convolve(const std::vector<T0__>& p1,
 struct convolve_functor__ {
     template <typename T0__, typename T1__>
         Eigen::Matrix<typename boost::math::tools::promote_args<T0__, T1__>::type, Eigen::Dynamic, 1>
-    operator()(const std::vector<T0__>& p1,
-             const std::vector<T1__>& p2,
+    operator()(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& p1,
+             const Eigen::Matrix<T1__, Eigen::Dynamic, 1>& p2,
              const int& K,
              const int& khalf, std::ostream* pstream__) const {
         return convolve(p1, p2, K, khalf, pstream__);
@@ -225,8 +225,8 @@ struct convolve_functor__ {
 class model_f1_g4
   : public stan::model::model_base_crtp<model_f1_g4> {
 private:
-        std::vector<double> p1_gl;
-        std::vector<double> p2_gl;
+        vector_d p1_gl;
+        vector_d p2_gl;
         std::vector<int> x;
         double drbound;
 public:
@@ -261,23 +261,23 @@ public:
             // initialize data block variables from context__
             current_statement_begin__ = 55;
             validate_non_negative_index("p1_gl", "5", 5);
-            context__.validate_dims("data initialization", "p1_gl", "double", context__.to_vec(5));
-            p1_gl = std::vector<double>(5, double(0));
+            context__.validate_dims("data initialization", "p1_gl", "vector_d", context__.to_vec(5));
+            p1_gl = Eigen::Matrix<double, Eigen::Dynamic, 1>(5);
             vals_r__ = context__.vals_r("p1_gl");
             pos__ = 0;
-            size_t p1_gl_k_0_max__ = 5;
-            for (size_t k_0__ = 0; k_0__ < p1_gl_k_0_max__; ++k_0__) {
-                p1_gl[k_0__] = vals_r__[pos__++];
+            size_t p1_gl_j_1_max__ = 5;
+            for (size_t j_1__ = 0; j_1__ < p1_gl_j_1_max__; ++j_1__) {
+                p1_gl(j_1__) = vals_r__[pos__++];
             }
             current_statement_begin__ = 56;
             validate_non_negative_index("p2_gl", "5", 5);
-            context__.validate_dims("data initialization", "p2_gl", "double", context__.to_vec(5));
-            p2_gl = std::vector<double>(5, double(0));
+            context__.validate_dims("data initialization", "p2_gl", "vector_d", context__.to_vec(5));
+            p2_gl = Eigen::Matrix<double, Eigen::Dynamic, 1>(5);
             vals_r__ = context__.vals_r("p2_gl");
             pos__ = 0;
-            size_t p2_gl_k_0_max__ = 5;
-            for (size_t k_0__ = 0; k_0__ < p2_gl_k_0_max__; ++k_0__) {
-                p2_gl[k_0__] = vals_r__[pos__++];
+            size_t p2_gl_j_1_max__ = 5;
+            for (size_t j_1__ = 0; j_1__ < p2_gl_j_1_max__; ++j_1__) {
+                p2_gl(j_1__) = vals_r__[pos__++];
             }
             current_statement_begin__ = 57;
             validate_non_negative_index("x", "5", 5);
@@ -378,26 +378,59 @@ public:
                 {
                 current_statement_begin__ = 68;
                 validate_non_negative_index("p1", "3", 3);
-                std::vector<local_scalar_t__  > p1(3, local_scalar_t__(DUMMY_VAR__));
+                Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
                 stan::math::initialize(p1, DUMMY_VAR__);
                 stan::math::fill(p1, DUMMY_VAR__);
-                stan::math::assign(p1,segfreq4(alpha, i, pstream__));
                 current_statement_begin__ = 69;
+                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
+                current_statement_begin__ = 70;
+                if (pstream__) {
+                    stan_print(pstream__,"i: ");
+                    stan_print(pstream__,i);
+                    *pstream__ << std::endl;
+                }
+                current_statement_begin__ = 71;
+                if (pstream__) {
+                    stan_print(pstream__,"p1: ");
+                    stan_print(pstream__,p1);
+                    *pstream__ << std::endl;
+                }
+                current_statement_begin__ = 72;
                 for (int j = 1; j <= 5; ++j) {
                     {
-                    current_statement_begin__ = 70;
+                    current_statement_begin__ = 73;
                     validate_non_negative_index("p2", "3", 3);
-                    std::vector<local_scalar_t__  > p2(3, local_scalar_t__(DUMMY_VAR__));
+                    Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
                     stan::math::initialize(p2, DUMMY_VAR__);
                     stan::math::fill(p2, DUMMY_VAR__);
-                    stan::math::assign(p2,segfreq4(alpha, i, pstream__));
-                    current_statement_begin__ = 71;
+                    current_statement_begin__ = 74;
                     validate_non_negative_index("q", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
                     stan::math::initialize(q, DUMMY_VAR__);
                     stan::math::fill(q, DUMMY_VAR__);
-                    stan::math::assign(q,convolve(p1, p2, 4, 3, pstream__));
-                    current_statement_begin__ = 72;
+                    current_statement_begin__ = 75;
+                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
+                    current_statement_begin__ = 76;
+                    if (pstream__) {
+                        stan_print(pstream__,"j: ");
+                        stan_print(pstream__,j);
+                        *pstream__ << std::endl;
+                    }
+                    current_statement_begin__ = 77;
+                    if (pstream__) {
+                        stan_print(pstream__,"p2: ");
+                        stan_print(pstream__,p2);
+                        *pstream__ << std::endl;
+                    }
+                    current_statement_begin__ = 78;
+                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
+                    current_statement_begin__ = 79;
+                    if (pstream__) {
+                        stan_print(pstream__,"q: ");
+                        stan_print(pstream__,q);
+                        *pstream__ << std::endl;
+                    }
+                    current_statement_begin__ = 80;
                     stan::model::assign(glmat, 
                                 stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                 ((multinomial_log(x, q) + get_base1(p1_gl, i, "p1_gl", 1)) + get_base1(p2_gl, j, "p2_gl", 1)), 
@@ -422,9 +455,9 @@ public:
                 }
             }
             // model body
-            current_statement_begin__ = 79;
+            current_statement_begin__ = 86;
             lp_accum__.add(uniform_log(alpha, 0.0, drbound));
-            current_statement_begin__ = 80;
+            current_statement_begin__ = 87;
             lp_accum__.add(log_sum_exp(glmat));
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -495,26 +528,59 @@ public:
                 {
                 current_statement_begin__ = 68;
                 validate_non_negative_index("p1", "3", 3);
-                std::vector<local_scalar_t__  > p1(3, local_scalar_t__(DUMMY_VAR__));
+                Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
                 stan::math::initialize(p1, DUMMY_VAR__);
                 stan::math::fill(p1, DUMMY_VAR__);
-                stan::math::assign(p1,segfreq4(alpha, i, pstream__));
                 current_statement_begin__ = 69;
+                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
+                current_statement_begin__ = 70;
+                if (pstream__) {
+                    stan_print(pstream__,"i: ");
+                    stan_print(pstream__,i);
+                    *pstream__ << std::endl;
+                }
+                current_statement_begin__ = 71;
+                if (pstream__) {
+                    stan_print(pstream__,"p1: ");
+                    stan_print(pstream__,p1);
+                    *pstream__ << std::endl;
+                }
+                current_statement_begin__ = 72;
                 for (int j = 1; j <= 5; ++j) {
                     {
-                    current_statement_begin__ = 70;
+                    current_statement_begin__ = 73;
                     validate_non_negative_index("p2", "3", 3);
-                    std::vector<local_scalar_t__  > p2(3, local_scalar_t__(DUMMY_VAR__));
+                    Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
                     stan::math::initialize(p2, DUMMY_VAR__);
                     stan::math::fill(p2, DUMMY_VAR__);
-                    stan::math::assign(p2,segfreq4(alpha, i, pstream__));
-                    current_statement_begin__ = 71;
+                    current_statement_begin__ = 74;
                     validate_non_negative_index("q", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
                     stan::math::initialize(q, DUMMY_VAR__);
                     stan::math::fill(q, DUMMY_VAR__);
-                    stan::math::assign(q,convolve(p1, p2, 4, 3, pstream__));
-                    current_statement_begin__ = 72;
+                    current_statement_begin__ = 75;
+                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
+                    current_statement_begin__ = 76;
+                    if (pstream__) {
+                        stan_print(pstream__,"j: ");
+                        stan_print(pstream__,j);
+                        *pstream__ << std::endl;
+                    }
+                    current_statement_begin__ = 77;
+                    if (pstream__) {
+                        stan_print(pstream__,"p2: ");
+                        stan_print(pstream__,p2);
+                        *pstream__ << std::endl;
+                    }
+                    current_statement_begin__ = 78;
+                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
+                    current_statement_begin__ = 79;
+                    if (pstream__) {
+                        stan_print(pstream__,"q: ");
+                        stan_print(pstream__,q);
+                        *pstream__ << std::endl;
+                    }
+                    current_statement_begin__ = 80;
                     stan::model::assign(glmat, 
                                 stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                 ((multinomial_log(x, q) + get_base1(p1_gl, i, "p1_gl", 1)) + get_base1(p2_gl, j, "p2_gl", 1)), 
