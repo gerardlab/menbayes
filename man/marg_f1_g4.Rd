@@ -28,7 +28,8 @@ numerical issues in stan.}
 \item{...}{Additional arguments to pass to \code{\link[rstan]{sampling}()}.}
 }
 \description{
-Marginal likelihood in F1 population of tetraploids
+Use this if the offspring genotypes are known, but the parental
+genotypes are \strong{not} known.
 }
 \examples{
 set.seed(1)

@@ -1,5 +1,5 @@
 // Tetraploid F1 test
-// parental genotypes are not known
+// parental genotypes are known
 
 functions {
   // alpha Double reduction rate
@@ -53,35 +53,23 @@ functions {
 }
 
 data {
-  vector[5] p1_gl; // genotype log-likelihoods for parent 1
-  vector[5] p2_gl; // genotype log-likelihoods for parent 2
   int<lower=0> x[5]; // genotype counts
   real<lower=0.0,upper=1.0> drbound; // upper bound of double reduction rate
-  real<lower=0.0,upper=1.0> mixprop; // mixing component with uniform
+  int<lower=0,upper=4> g1; // first parent genotype
+  int<lower=0,upper=4> g2; // second parent genotype
 }
 
 parameters {
   real<lower=0,upper=drbound> alpha; // double reduction rate
 }
 
-transformed parameters {
-  matrix[5, 5] glmat;
-  for (i in 1:5) {
-    vector[3] p1;
-    p1 = segfreq4(alpha, i - 1);
-    for (j in 1:5) {
-      vector[5] u = [0.2, 0.2, 0.2, 0.2, 0.2]';
-      vector[3] p2;
-      vector[5] q;
-      p2 = segfreq4(alpha, j - 1);
-      q = convolve(p1, p2, 4, 3);
-      q = (1.0 - mixprop) * q + mixprop * u; // mixing to avoid gradient issues
-      glmat[i, j] = multinomial_lpmf(x | q) + p1_gl[i] + p2_gl[j];
-    }
-  }
-}
-
 model {
+  vector[3] p1;
+  vector[3] p2;
+  vector[5] q;
+  p1 = segfreq4(alpha, g1);
+  p2 = segfreq4(alpha, g2);
+  q = convolve(p1, p2, 4, 3);
   target += uniform_lpdf(alpha | 0.0, drbound);
-  target += log_sum_exp(glmat);
+  target += multinomial_lpmf(x | q);
 }
