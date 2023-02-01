@@ -40,7 +40,7 @@ x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
 p1_gl <- rep(log(0.2), 5)
 p2_gl <- rep(log(0.2), 5)
 mixprop <- 0.001
-malt <- marg_alt_g(x, chains = 1)
+malt <- hwep:::ddirmult(x = x, alpha = rep(1, 5), lg = TRUE)
 mnull <- marg_f1_g4(x,
                     chains = 1,
                     p1_gl = c(-10, -10, -1, -10, -10),

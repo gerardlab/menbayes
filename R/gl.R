@@ -39,3 +39,48 @@ marg_alt_gl <- function(gl, beta, lg = TRUE, ...) {
   }
   return(mx)
 }
+
+#' Marginal likelihood under null using genotype log-likelihoods
+#'
+#' @inheritParams marg_f1_g4
+#' @param gl A matrix of genotype log-likelihoods. The rows index the
+#'     individuals and the columns index the possible genotypes. So
+#'     \code{gl[i, k]} is the genotype log-likelihood for individual i and
+#'     genotype k-1.
+#'
+#' @examples
+#' gl <- matrix(runif(20), ncol = 5)
+#' marg_f1_gl4(gl = gl)
+#'
+#' @export
+marg_f1_gl4 <- function(gl,
+                        p1_gl = rep(log(0.2), 5),
+                        p2_gl = rep(log(0.2), 5),
+                        mixprop = 0.001,
+                        lg = TRUE, ...) {
+  stopifnot(ncol(gl) == 5,
+            length(p1_gl) == 5,
+            length(p2_gl) == 5,
+            length(mixprop) == 1)
+  stopifnot(mixprop > 0, mixprop <= 1)
+  drbound <- hwep::drbounds(ploidy = 4)
+  stan_dat <- list(gl = gl,
+                   N = nrow(gl),
+                   drbound = drbound,
+                   p1_gl = p1_gl,
+                   p2_gl = p2_gl,
+                   mixprop = mixprop)
+  stan_out <- rstan::sampling(object = stanmodels$f1_gl4,
+                              data = stan_dat,
+                              verbose = FALSE,
+                              show_messages = FALSE,
+                              ...)
+  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
+
+  if (lg) {
+    mx <- bridge_out$logml
+  } else {
+    mx <- exp(bridge_out$logml)
+  }
+  return(mx)
+}

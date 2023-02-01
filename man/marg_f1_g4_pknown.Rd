@@ -22,9 +22,14 @@ Here, parental genotypes are known.
 }
 \examples{
 q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
+q <- runif(5)
+q <- q / sum(q)
 x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
 g1 <- 2
 g2 <- 2
+marg_null <- marg_f1_g4_pknown(x = x, g1 = g1, g2 = g2, chains = 1)
+marg_alt <- hwep:::ddirmult(x = x, alpha = rep(1, 5), lg = TRUE)
+marg_null - marg_alt
 
 }
 \author{

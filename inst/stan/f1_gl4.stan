@@ -53,9 +53,10 @@ functions {
 }
 
 data {
+  int N;
   vector[5] p1_gl; // genotype log-likelihoods for parent 1
   vector[5] p2_gl; // genotype log-likelihoods for parent 2
-  int<lower=0> x[5]; // genotype counts
+  matrix[N, 5] gl; // genotype log-likelihoods for offspring
   real<lower=0.0,upper=1.0> drbound; // upper bound of double reduction rate
   real<lower=0.0,upper=1.0> mixprop; // mixing component with uniform
 }
@@ -76,7 +77,10 @@ transformed parameters {
       p2 = segfreq4(alpha, j - 1);
       q = convolve(p1, p2, 4, 3);
       q = (1.0 - mixprop) * q + mixprop * u; // mixing to avoid gradient issues
-      glmat[i, j] = multinomial_lpmf(x | q) + p1_gl[i] + p2_gl[j];
+      glmat[i, j] = p1_gl[i] + p2_gl[j];
+      for (ind in 1:N) {
+        glmat[i, j] += log_sum_exp(to_vector(gl[ind]) + log(q));
+      }
     }
   }
 }
