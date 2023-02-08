@@ -17,6 +17,10 @@ RcppExport SEXP _rcpp_module_boot_stan_fit4alt_gl_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4f1_g4_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4f1_g4_pknown_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4f1_gl4_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4pp_f1_g4_pknown_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4pp_f1_gl4_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4pp_nodr_f1_g4_pknown_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4pp_nodr_f1_gl4_mod();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcpp_module_boot_stan_fit4alt_g_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4alt_g_mod, 0},
@@ -24,6 +28,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcpp_module_boot_stan_fit4f1_g4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4f1_g4_mod, 0},
     {"_rcpp_module_boot_stan_fit4f1_g4_pknown_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4f1_g4_pknown_mod, 0},
     {"_rcpp_module_boot_stan_fit4f1_gl4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4f1_gl4_mod, 0},
+    {"_rcpp_module_boot_stan_fit4pp_f1_g4_pknown_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_f1_g4_pknown_mod, 0},
+    {"_rcpp_module_boot_stan_fit4pp_f1_gl4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_f1_gl4_mod, 0},
+    {"_rcpp_module_boot_stan_fit4pp_nodr_f1_g4_pknown_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_nodr_f1_g4_pknown_mod, 0},
+    {"_rcpp_module_boot_stan_fit4pp_nodr_f1_gl4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_nodr_f1_gl4_mod, 0},
     {NULL, NULL, 0}
 };
 

@@ -106,7 +106,7 @@ marg_f1_g4 <- function(x,
 #'
 #' @inheritParams marg_f1_g4
 #' @param g1 The first parent's genotype.
-#' @param g2 The second parent's gentoype.
+#' @param g2 The second parent's genoype.
 #'
 #' @author David Gerard
 #'
@@ -136,6 +136,58 @@ marg_f1_g4_pknown <- function(x,
                    g1 = g1,
                    g2 = g2)
   stan_out <- rstan::sampling(object = stanmodels$f1_g4_pknown,
+                              data = stan_dat,
+                              verbose = FALSE,
+                              show_messages = FALSE,
+                              ...)
+  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
+
+  if (lg) {
+    mx <- bridge_out$logml
+  } else {
+    mx <- exp(bridge_out$logml)
+  }
+  return(mx)
+}
+
+#' Marginal likelihood in tetraploid F1 population
+#'
+#' Here, parental genotypes are known.
+#'
+#' @inheritParams marg_f1_g4
+#' @param g1 The first parent's genotype.
+#' @param g2 The second parent's genoype.
+#'
+#' @author David Gerard
+#'
+#' @examples
+#' q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
+#' q <- runif(5)
+#' q <- q / sum(q)
+#' x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
+#' g1 <- 2
+#' g2 <- 2
+#' marg_null <- pp_marg_f1_g4_pknown(x = x, g1 = g1, g2 = g2, chains = 1)
+#' marg_alt <- hwep:::ddirmult(x = x, alpha = rep(1, 5), lg = TRUE)
+#' marg_null - marg_alt
+#'
+#' @export
+pp_marg_f1_g4_pknown <- function(x,
+                              g1,
+                              g2,
+                              lg = TRUE, ...) {
+  stopifnot(length(x) == 5,
+            length(g1) == 1,
+            length(g2) == 1)
+  stopifnot(g1 >= 0, g1 <= 4, g2 >= 0, g2 <= 4)
+  drbound <- hwep::drbounds(ploidy = 4)
+  ppbound <- 1/3
+  stan_dat <- list(x = x,
+                   drbound = drbound,
+                   ppbound = ppbound,
+                   g1 = g1,
+                   g2 = g2)
+  stan_out <- rstan::sampling(object = stanmodels$pp_f1_g4_pknown,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,

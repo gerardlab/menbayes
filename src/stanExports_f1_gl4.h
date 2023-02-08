@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_f1_gl4");
-    reader.add_event(93, 91, "end", "model_f1_gl4");
+    reader.add_event(94, 92, "end", "model_f1_gl4");
     return reader;
 }
 template <typename T0__>
@@ -49,95 +49,95 @@ segfreq4(const T0__& alpha,
     int current_statement_begin__ = -1;
     try {
         {
-        current_statement_begin__ = 10;
+        current_statement_begin__ = 11;
         validate_non_negative_index("p", "3", 3);
         Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p(3);
         stan::math::initialize(p, DUMMY_VAR__);
         stan::math::fill(p, DUMMY_VAR__);
-        current_statement_begin__ = 11;
+        current_statement_begin__ = 12;
         if (as_bool(logical_eq(g, 0))) {
-            current_statement_begin__ = 12;
+            current_statement_begin__ = 13;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         1.0, 
                         "assigning variable p");
-            current_statement_begin__ = 13;
+            current_statement_begin__ = 14;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
                         0.0, 
                         "assigning variable p");
-            current_statement_begin__ = 14;
+            current_statement_begin__ = 15;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(3), stan::model::nil_index_list()), 
                         0.0, 
                         "assigning variable p");
         } else if (as_bool(logical_eq(g, 1))) {
-            current_statement_begin__ = 16;
+            current_statement_begin__ = 17;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         ((2.0 + alpha) / 4.0), 
                         "assigning variable p");
-            current_statement_begin__ = 17;
+            current_statement_begin__ = 18;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
                         ((2.0 * (1.0 - alpha)) / 4.0), 
                         "assigning variable p");
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 19;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(3), stan::model::nil_index_list()), 
                         (alpha / 4.0), 
                         "assigning variable p");
         } else if (as_bool(logical_eq(g, 2))) {
-            current_statement_begin__ = 20;
+            current_statement_begin__ = 21;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         ((1.0 + (2.0 * alpha)) / 6.0), 
                         "assigning variable p");
-            current_statement_begin__ = 21;
+            current_statement_begin__ = 22;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
                         ((4.0 * (1.0 - alpha)) / 6.0), 
                         "assigning variable p");
-            current_statement_begin__ = 22;
+            current_statement_begin__ = 23;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(3), stan::model::nil_index_list()), 
                         ((1.0 + (2.0 * alpha)) / 6.0), 
                         "assigning variable p");
         } else if (as_bool(logical_eq(g, 3))) {
-            current_statement_begin__ = 24;
+            current_statement_begin__ = 25;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         (alpha / 4.0), 
                         "assigning variable p");
-            current_statement_begin__ = 25;
+            current_statement_begin__ = 26;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
                         ((2.0 * (1.0 - alpha)) / 4.0), 
                         "assigning variable p");
-            current_statement_begin__ = 26;
+            current_statement_begin__ = 27;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(3), stan::model::nil_index_list()), 
                         ((2.0 + alpha) / 4.0), 
                         "assigning variable p");
         } else if (as_bool(logical_eq(g, 4))) {
-            current_statement_begin__ = 28;
+            current_statement_begin__ = 29;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(1), stan::model::nil_index_list()), 
                         0.0, 
                         "assigning variable p");
-            current_statement_begin__ = 29;
+            current_statement_begin__ = 30;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(2), stan::model::nil_index_list()), 
                         0.0, 
                         "assigning variable p");
-            current_statement_begin__ = 30;
+            current_statement_begin__ = 31;
             stan::model::assign(p, 
                         stan::model::cons_list(stan::model::index_uni(3), stan::model::nil_index_list()), 
                         1.0, 
                         "assigning variable p");
         } else {
         }
-        current_statement_begin__ = 34;
+        current_statement_begin__ = 35;
         return stan::math::promote_scalar<fun_return_scalar_t__>(p);
         }
     } catch (const std::exception& e) {
@@ -169,32 +169,32 @@ convolve(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& p1,
     int current_statement_begin__ = -1;
     try {
         {
-        current_statement_begin__ = 42;
+        current_statement_begin__ = 43;
         validate_non_negative_index("q", "(K + 1)", (K + 1));
         Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q((K + 1));
         stan::math::initialize(q, DUMMY_VAR__);
         stan::math::fill(q, DUMMY_VAR__);
-        current_statement_begin__ = 43;
+        current_statement_begin__ = 44;
         for (int k = 1; k <= (K + 1); ++k) {
             {
-            current_statement_begin__ = 44;
+            current_statement_begin__ = 45;
             int iup(0);
             (void) iup;  // dummy to suppress unused var warning
             stan::math::fill(iup, std::numeric_limits<int>::min());
             stan::math::assign(iup,std::min((k - 1), (khalf - 1)));
-            current_statement_begin__ = 45;
+            current_statement_begin__ = 46;
             int ilo(0);
             (void) ilo;  // dummy to suppress unused var warning
             stan::math::fill(ilo, std::numeric_limits<int>::min());
             stan::math::assign(ilo,std::max(0, (k - khalf)));
-            current_statement_begin__ = 46;
+            current_statement_begin__ = 47;
             stan::model::assign(q, 
                         stan::model::cons_list(stan::model::index_uni(k), stan::model::nil_index_list()), 
                         0.0, 
                         "assigning variable q");
-            current_statement_begin__ = 47;
+            current_statement_begin__ = 48;
             for (int i = ilo; i <= iup; ++i) {
-                current_statement_begin__ = 48;
+                current_statement_begin__ = 49;
                 stan::model::assign(q, 
                             stan::model::cons_list(stan::model::index_uni(k), stan::model::nil_index_list()), 
                             (stan::model::rvalue(q, stan::model::cons_list(stan::model::index_uni(k), stan::model::nil_index_list()), "q") + (get_base1(p1, (i + 1), "p1", 1) * get_base1(p2, (k - i), "p2", 1))), 
@@ -202,7 +202,7 @@ convolve(const Eigen::Matrix<T0__, Eigen::Dynamic, 1>& p1,
             }
             }
         }
-        current_statement_begin__ = 51;
+        current_statement_begin__ = 52;
         return stan::math::promote_scalar<fun_return_scalar_t__>(q);
         }
     } catch (const std::exception& e) {
@@ -261,13 +261,13 @@ public:
         (void) DUMMY_VAR__;  // suppress unused var warning
         try {
             // initialize data block variables from context__
-            current_statement_begin__ = 56;
+            current_statement_begin__ = 57;
             context__.validate_dims("data initialization", "N", "int", context__.to_vec());
             N = int(0);
             vals_i__ = context__.vals_i("N");
             pos__ = 0;
             N = vals_i__[pos__++];
-            current_statement_begin__ = 57;
+            current_statement_begin__ = 58;
             validate_non_negative_index("p1_gl", "5", 5);
             context__.validate_dims("data initialization", "p1_gl", "vector_d", context__.to_vec(5));
             p1_gl = Eigen::Matrix<double, Eigen::Dynamic, 1>(5);
@@ -277,7 +277,7 @@ public:
             for (size_t j_1__ = 0; j_1__ < p1_gl_j_1_max__; ++j_1__) {
                 p1_gl(j_1__) = vals_r__[pos__++];
             }
-            current_statement_begin__ = 58;
+            current_statement_begin__ = 59;
             validate_non_negative_index("p2_gl", "5", 5);
             context__.validate_dims("data initialization", "p2_gl", "vector_d", context__.to_vec(5));
             p2_gl = Eigen::Matrix<double, Eigen::Dynamic, 1>(5);
@@ -287,7 +287,7 @@ public:
             for (size_t j_1__ = 0; j_1__ < p2_gl_j_1_max__; ++j_1__) {
                 p2_gl(j_1__) = vals_r__[pos__++];
             }
-            current_statement_begin__ = 59;
+            current_statement_begin__ = 60;
             validate_non_negative_index("gl", "N", N);
             validate_non_negative_index("gl", "5", 5);
             context__.validate_dims("data initialization", "gl", "matrix_d", context__.to_vec(N,5));
@@ -301,7 +301,7 @@ public:
                     gl(j_1__, j_2__) = vals_r__[pos__++];
                 }
             }
-            current_statement_begin__ = 60;
+            current_statement_begin__ = 61;
             context__.validate_dims("data initialization", "drbound", "double", context__.to_vec());
             drbound = double(0);
             vals_r__ = context__.vals_r("drbound");
@@ -309,7 +309,7 @@ public:
             drbound = vals_r__[pos__++];
             check_greater_or_equal(function__, "drbound", drbound, 0.0);
             check_less_or_equal(function__, "drbound", drbound, 1.0);
-            current_statement_begin__ = 61;
+            current_statement_begin__ = 62;
             context__.validate_dims("data initialization", "mixprop", "double", context__.to_vec());
             mixprop = double(0);
             vals_r__ = context__.vals_r("mixprop");
@@ -323,7 +323,7 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 65;
+            current_statement_begin__ = 66;
             num_params_r__ += 1;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -342,7 +342,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 65;
+        current_statement_begin__ = 66;
         if (!(context__.contains_r("alpha")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable alpha missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("alpha");
@@ -380,7 +380,7 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 65;
+            current_statement_begin__ = 66;
             local_scalar_t__ alpha;
             (void) alpha;  // dummy to suppress unused var warning
             if (jacobian__)
@@ -388,56 +388,56 @@ public:
             else
                 alpha = in__.scalar_lub_constrain(0, drbound);
             // transformed parameters
-            current_statement_begin__ = 69;
+            current_statement_begin__ = 70;
             validate_non_negative_index("glmat", "5", 5);
             validate_non_negative_index("glmat", "5", 5);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, Eigen::Dynamic> glmat(5, 5);
             stan::math::initialize(glmat, DUMMY_VAR__);
             stan::math::fill(glmat, DUMMY_VAR__);
             // transformed parameters block statements
-            current_statement_begin__ = 70;
+            current_statement_begin__ = 71;
             for (int i = 1; i <= 5; ++i) {
                 {
-                current_statement_begin__ = 71;
+                current_statement_begin__ = 72;
                 validate_non_negative_index("p1", "3", 3);
                 Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
                 stan::math::initialize(p1, DUMMY_VAR__);
                 stan::math::fill(p1, DUMMY_VAR__);
-                current_statement_begin__ = 72;
-                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
                 current_statement_begin__ = 73;
+                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
+                current_statement_begin__ = 74;
                 for (int j = 1; j <= 5; ++j) {
                     {
-                    current_statement_begin__ = 74;
+                    current_statement_begin__ = 75;
                     validate_non_negative_index("u", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> u(5);
                     stan::math::initialize(u, DUMMY_VAR__);
                     stan::math::fill(u, DUMMY_VAR__);
                     stan::math::assign(u,transpose(stan::math::to_row_vector(stan::math::array_builder<double >().add(0.2).add(0.2).add(0.2).add(0.2).add(0.2).array())));
-                    current_statement_begin__ = 75;
+                    current_statement_begin__ = 76;
                     validate_non_negative_index("p2", "3", 3);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
                     stan::math::initialize(p2, DUMMY_VAR__);
                     stan::math::fill(p2, DUMMY_VAR__);
-                    current_statement_begin__ = 76;
+                    current_statement_begin__ = 77;
                     validate_non_negative_index("q", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
                     stan::math::initialize(q, DUMMY_VAR__);
                     stan::math::fill(q, DUMMY_VAR__);
-                    current_statement_begin__ = 77;
-                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
                     current_statement_begin__ = 78;
-                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
+                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
                     current_statement_begin__ = 79;
-                    stan::math::assign(q, add(multiply((1.0 - mixprop), q), multiply(mixprop, u)));
+                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
                     current_statement_begin__ = 80;
+                    stan::math::assign(q, add(multiply((1.0 - mixprop), q), multiply(mixprop, u)));
+                    current_statement_begin__ = 81;
                     stan::model::assign(glmat, 
                                 stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                 (get_base1(p1_gl, i, "p1_gl", 1) + get_base1(p2_gl, j, "p2_gl", 1)), 
                                 "assigning variable glmat");
-                    current_statement_begin__ = 81;
+                    current_statement_begin__ = 82;
                     for (int ind = 1; ind <= N; ++ind) {
-                        current_statement_begin__ = 82;
+                        current_statement_begin__ = 83;
                         stan::model::assign(glmat, 
                                     stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                     (stan::model::rvalue(glmat, stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), "glmat") + log_sum_exp(add(to_vector(get_base1(gl, ind, "gl", 1)), stan::math::log(q)))), 
@@ -450,7 +450,7 @@ public:
             // validate transformed parameters
             const char* function__ = "validate transformed params";
             (void) function__;  // dummy to suppress unused var warning
-            current_statement_begin__ = 69;
+            current_statement_begin__ = 70;
             size_t glmat_j_1_max__ = 5;
             size_t glmat_j_2_max__ = 5;
             for (size_t j_1__ = 0; j_1__ < glmat_j_1_max__; ++j_1__) {
@@ -463,9 +463,9 @@ public:
                 }
             }
             // model body
-            current_statement_begin__ = 89;
-            lp_accum__.add(uniform_log(alpha, 0.0, drbound));
             current_statement_begin__ = 90;
+            lp_accum__.add(uniform_log(alpha, 0.0, drbound));
+            current_statement_begin__ = 91;
             lp_accum__.add(log_sum_exp(glmat));
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -524,56 +524,56 @@ public:
         if (!include_tparams__ && !include_gqs__) return;
         try {
             // declare and define transformed parameters
-            current_statement_begin__ = 69;
+            current_statement_begin__ = 70;
             validate_non_negative_index("glmat", "5", 5);
             validate_non_negative_index("glmat", "5", 5);
             Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> glmat(5, 5);
             stan::math::initialize(glmat, DUMMY_VAR__);
             stan::math::fill(glmat, DUMMY_VAR__);
             // do transformed parameters statements
-            current_statement_begin__ = 70;
+            current_statement_begin__ = 71;
             for (int i = 1; i <= 5; ++i) {
                 {
-                current_statement_begin__ = 71;
+                current_statement_begin__ = 72;
                 validate_non_negative_index("p1", "3", 3);
                 Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
                 stan::math::initialize(p1, DUMMY_VAR__);
                 stan::math::fill(p1, DUMMY_VAR__);
-                current_statement_begin__ = 72;
-                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
                 current_statement_begin__ = 73;
+                stan::math::assign(p1, segfreq4(alpha, (i - 1), pstream__));
+                current_statement_begin__ = 74;
                 for (int j = 1; j <= 5; ++j) {
                     {
-                    current_statement_begin__ = 74;
+                    current_statement_begin__ = 75;
                     validate_non_negative_index("u", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> u(5);
                     stan::math::initialize(u, DUMMY_VAR__);
                     stan::math::fill(u, DUMMY_VAR__);
                     stan::math::assign(u,transpose(stan::math::to_row_vector(stan::math::array_builder<double >().add(0.2).add(0.2).add(0.2).add(0.2).add(0.2).array())));
-                    current_statement_begin__ = 75;
+                    current_statement_begin__ = 76;
                     validate_non_negative_index("p2", "3", 3);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
                     stan::math::initialize(p2, DUMMY_VAR__);
                     stan::math::fill(p2, DUMMY_VAR__);
-                    current_statement_begin__ = 76;
+                    current_statement_begin__ = 77;
                     validate_non_negative_index("q", "5", 5);
                     Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
                     stan::math::initialize(q, DUMMY_VAR__);
                     stan::math::fill(q, DUMMY_VAR__);
-                    current_statement_begin__ = 77;
-                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
                     current_statement_begin__ = 78;
-                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
+                    stan::math::assign(p2, segfreq4(alpha, (j - 1), pstream__));
                     current_statement_begin__ = 79;
-                    stan::math::assign(q, add(multiply((1.0 - mixprop), q), multiply(mixprop, u)));
+                    stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
                     current_statement_begin__ = 80;
+                    stan::math::assign(q, add(multiply((1.0 - mixprop), q), multiply(mixprop, u)));
+                    current_statement_begin__ = 81;
                     stan::model::assign(glmat, 
                                 stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                 (get_base1(p1_gl, i, "p1_gl", 1) + get_base1(p2_gl, j, "p2_gl", 1)), 
                                 "assigning variable glmat");
-                    current_statement_begin__ = 81;
+                    current_statement_begin__ = 82;
                     for (int ind = 1; ind <= N; ++ind) {
-                        current_statement_begin__ = 82;
+                        current_statement_begin__ = 83;
                         stan::model::assign(glmat, 
                                     stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), 
                                     (stan::model::rvalue(glmat, stan::model::cons_list(stan::model::index_uni(i), stan::model::cons_list(stan::model::index_uni(j), stan::model::nil_index_list())), "glmat") + log_sum_exp(add(to_vector(get_base1(gl, ind, "gl", 1)), stan::math::log(q)))), 
