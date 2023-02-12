@@ -2,12 +2,12 @@
 
 #include <Rcpp.h>
 using namespace Rcpp ;
-#include "stanExports_pp_f1_gl4.h"
+#include "stanExports_marg_ndr_pp_g4.h"
 
-RCPP_MODULE(stan_fit4pp_f1_gl4_mod) {
+RCPP_MODULE(stan_fit4marg_ndr_pp_g4_mod) {
 
 
-    class_<rstan::stan_fit<stan_model, boost::random::ecuyer1988> >("rstantools_model_pp_f1_gl4")
+    class_<rstan::stan_fit<stan_model, boost::random::ecuyer1988> >("rstantools_model_marg_ndr_pp_g4")
 
     .constructor<SEXP,SEXP,SEXP>()
 
