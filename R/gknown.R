@@ -9,7 +9,7 @@
 #' @param lg A logical. Should we log the marginal likelihood or not?
 #' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
 #'
-#' @return The mariginal likelihood.
+#' @return The marginal likelihood.
 #'
 #' @author David Gerard
 #'
@@ -84,7 +84,7 @@ marg_f1_g4 <- function(x,
                    p1_gl = p1_gl,
                    p2_gl = p2_gl,
                    mixprop = mixprop)
-  stan_out <- rstan::sampling(object = stanmodels$f1_g4,
+  stan_out <- rstan::sampling(object = stanmodels$marg_dr_npp_gl4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
@@ -135,7 +135,7 @@ marg_f1_g4_pknown <- function(x,
                    drbound = drbound,
                    g1 = g1,
                    g2 = g2)
-  stan_out <- rstan::sampling(object = stanmodels$f1_g4_pknown,
+  stan_out <- rstan::sampling(object = stanmodels$marg_dr_npp_g4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
@@ -187,7 +187,7 @@ pp_marg_f1_g4_pknown <- function(x,
                    ppbound = ppbound,
                    g1 = g1,
                    g2 = g2)
-  stan_out <- rstan::sampling(object = stanmodels$pp_f1_g4_pknown,
+  stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_g4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
