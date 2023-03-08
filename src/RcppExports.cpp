@@ -18,6 +18,7 @@ RcppExport SEXP _rcpp_module_boot_stan_fit4marg_dr_npp_g4_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4marg_dr_npp_gl4_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4marg_dr_pp_g4_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4marg_dr_pp_gl4_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4marg_dr_pp_glpknown_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4marg_ndr_npp_g4_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4marg_ndr_npp_gl4_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4marg_ndr_pp_g4_mod();
@@ -30,6 +31,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcpp_module_boot_stan_fit4marg_dr_npp_gl4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_dr_npp_gl4_mod, 0},
     {"_rcpp_module_boot_stan_fit4marg_dr_pp_g4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_dr_pp_g4_mod, 0},
     {"_rcpp_module_boot_stan_fit4marg_dr_pp_gl4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_dr_pp_gl4_mod, 0},
+    {"_rcpp_module_boot_stan_fit4marg_dr_pp_glpknown_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_dr_pp_glpknown_mod, 0},
     {"_rcpp_module_boot_stan_fit4marg_ndr_npp_g4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_ndr_npp_g4_mod, 0},
     {"_rcpp_module_boot_stan_fit4marg_ndr_npp_gl4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_ndr_npp_gl4_mod, 0},
     {"_rcpp_module_boot_stan_fit4marg_ndr_pp_g4_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4marg_ndr_pp_g4_mod, 0},

@@ -16,7 +16,7 @@ marg_alt_g(x, beta = rep(1, length(x)), lg = TRUE, ...)
 \item{...}{Additional arguments to pass to \code{\link[rstan]{sampling}()}.}
 }
 \value{
-The mariginal likelihood.
+The marginal likelihood.
 }
 \description{
 Marginal likelihood under alternative when genotypes are known

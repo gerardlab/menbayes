@@ -2,7 +2,7 @@
 % Please edit documentation in R/gl.R
 \name{marg_alt_gl}
 \alias{marg_alt_gl}
-\title{Marginal likelihood under alternative using gentoype log-likelihoods}
+\title{Marginal likelihood under alternative using genotype log-likelihoods}
 \usage{
 marg_alt_gl(gl, beta, lg = TRUE, ...)
 }
@@ -22,7 +22,7 @@ genotype k-1.}
 The marginal likelihood.
 }
 \description{
-Marginal likelihood under alternative using gentoype log-likelihoods
+Marginal likelihood under alternative using genotype log-likelihoods
 }
 \examples{
 x <- c(1, 2, 7, 3, 3)
