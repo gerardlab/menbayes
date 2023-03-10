@@ -61,7 +61,6 @@ data {
   real<lower=0.0,upper=1.0> ppbound; //upper bound of preferential pairing rate
   int<lower=0,upper=4> g1; // first parent genotype
   int<lower=0,upper=4> g2; // second parent genotype
-  real<lower=0.0,upper=1.0> mixprop; // mixing component with uniform
 }
 
 parameters {
@@ -77,8 +76,6 @@ model {
   p1 = segfreq4(alpha, xi, g1);
   p2 = segfreq4(alpha, xi, g2);
   q = convolve(p1, p2, 4, 3);
-  u = [0.2, 0.2, 0.2, 0.2, 0.2]';
-  q = (1.0 - mixprop) * q + mixprop * u; // mixing to avoid gradient issues
   target += uniform_lpdf(alpha | 0.0, drbound);
   target += beta_lpdf(xi | 1.0, 2.0);
   for (ind in 1:N) {

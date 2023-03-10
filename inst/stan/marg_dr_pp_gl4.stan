@@ -60,13 +60,12 @@ data {
   vector[5] p2_gl; // genotype log-likelihoods for parent 2
   matrix[N, 5] gl; // genotype log-likelihoods for offspring
   real<lower=0.0,upper=1.0> drbound; // upper bound of double reduction rate
-  real<lower=0.0,upper=1.0> ppbound; //upper bound of preferential pairing rate
   real<lower=0.0,upper=1.0> mixprop; // mixing component with uniform
 }
 
 parameters {
   real<lower=0,upper=drbound> alpha; // double reduction rate
-  real<lower=0.0,upper=ppbound> xi; // preferential pairing rate
+  real<lower=0.0,upper=1> xi; // preferential pairing rate
 }
 
 transformed parameters {

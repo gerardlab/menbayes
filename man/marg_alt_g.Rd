@@ -22,11 +22,10 @@ The marginal likelihood.
 Marginal likelihood under alternative when genotypes are known
 }
 \examples{
-x <- c(1, 2, 7, 3, 3)
-beta <- rep(1, 5)
-marg_alt_g(x = x, beta = beta, chains = 1)
+x <- c(3L, 21L, 52L, 20L, 4L)
+marg_alt_g(x = x, chains = 1)
 
 }
 \author{
-David Gerard
+Mira Thakkar and David Gerard
 }

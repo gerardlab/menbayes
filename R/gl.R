@@ -4,15 +4,12 @@
 
 #' Marginal likelihood under alternative using genotype log-likelihoods
 #'
-#' @inheritParams marg_alt_gl
-#' @param gl A matrix of genotype log-likelihoods. The rows index the
-#'     individuals and the columns index the possible genotypes. So
-#'     \code{gl[i, k]} is the genotype log-likelihood for individual i and
-#'     genotype k-1.
+#' @inheritParams marg_f1_dr_pp_gl4
+#' @param beta The vector of hyperparameters.
 #'
 #' @return The marginal likelihood.
 #'
-#' @author David Gerard
+#' @author Mira Thakkar and David Gerard
 #'
 #' @examples
 #' x <- c(1, 2, 7, 3, 3)
@@ -40,13 +37,29 @@ marg_alt_gl <- function(gl, beta, lg = TRUE, ...) {
   return(mx)
 }
 
-#' Marginal likelihood under null using genotype log-likelihoods
+#' Marginal likelihood, no double reduction, no preferential pairing, genotype likelihoods.
 #'
-#' @inheritParams marg_f1_dr_npp_gl4
-#' @param gl A matrix of genotype log-likelihoods. The rows index the
-#'     individuals and the columns index the possible genotypes. So
-#'     \code{gl[i, k]} is the genotype log-likelihood for individual i and
-#'     genotype k-1.
+#' @inheritParams marg_f1_dr_pp_gl4
+#'
+#' @author Mira Thakkar and David Gerard
+#'
+#' @examples
+#' gl <- matrix(runif(20), ncol = 5)
+#' marg_f1_dr_npp_gl4(gl = gl)
+#'
+#' @export
+marg_f1_ndr_npp_gl4 <- function(gl,
+                                p1_gl = rep(log(0.2), 5),
+                                p2_gl = rep(log(0.2), 5),
+                                lg = TRUE) {
+
+}
+
+#' Marginal likelihood, double reduction, no preferential pairing, genotype likelihoods.
+#'
+#' @inheritParams marg_f1_dr_pp_gl4
+#'
+#' @author Mira Thakkar and David Gerard
 #'
 #' @examples
 #' gl <- matrix(runif(20), ncol = 5)
@@ -54,10 +67,11 @@ marg_alt_gl <- function(gl, beta, lg = TRUE, ...) {
 #'
 #' @export
 marg_f1_dr_npp_gl4 <- function(gl,
-                        p1_gl = rep(log(0.2), 5),
-                        p2_gl = rep(log(0.2), 5),
-                        mixprop = 0.001,
-                        lg = TRUE, ...) {
+                               p1_gl = rep(log(0.2), 5),
+                               p2_gl = rep(log(0.2), 5),
+                               mixprop = 0.001,
+                               lg = TRUE,
+                               ...) {
   stopifnot(ncol(gl) == 5,
             length(p1_gl) == 5,
             length(p2_gl) == 5,
@@ -85,39 +99,34 @@ marg_f1_dr_npp_gl4 <- function(gl,
   return(mx)
 }
 
-#' Marginal likelihood under null using genotype log-likelihoods
+#' Marginal likelihood, no double reduction, preferential pairing, genotype likelihoods.
 #'
-#' @inheritParams marg_f1_dr_npp_gl4
-#' @param gl A matrix of genotype log-likelihoods. The rows index the
-#'     individuals and the columns index the possible genotypes. So
-#'     \code{gl[i, k]} is the genotype log-likelihood for individual i and
-#'     genotype k-1.
+#' @inheritParams marg_f1_dr_pp_gl4
+#'
+#' @author Mira Thakkar and David Gerard
 #'
 #' @examples
 #' gl <- matrix(runif(20), ncol = 5)
-#' marg_f1_dr_pp_gl4(gl = gl)
+#' marg_f1_dr_npp_gl4(gl = gl)
 #'
 #' @export
-marg_f1_dr_pp_gl4 <- function(gl,
-                        p1_gl = rep(log(0.2), 5),
-                        p2_gl = rep(log(0.2), 5),
-                        mixprop = 0.001,
-                        lg = TRUE, ...) {
+marg_f1_ndr_pp_gl4 <- function(gl,
+                               p1_gl = rep(log(0.2), 5),
+                               p2_gl = rep(log(0.2), 5),
+                               mixprop = 0.001,
+                               lg = TRUE,
+                               ...) {
   stopifnot(ncol(gl) == 5,
             length(p1_gl) == 5,
             length(p2_gl) == 5,
             length(mixprop) == 1)
   stopifnot(mixprop > 0, mixprop <= 1)
-  drbound <- hwep::drbounds(ploidy = 4)
-  ppbound <- 1/3
   stan_dat <- list(gl = gl,
                    N = nrow(gl),
-                   drbound = drbound,
-                   ppbound = ppbound,
                    p1_gl = p1_gl,
                    p2_gl = p2_gl,
                    mixprop = mixprop)
-  stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_gl4,
+  stan_out <- rstan::sampling(object = stanmodels$marg_ndr_pp_gl4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
@@ -132,40 +141,45 @@ marg_f1_dr_pp_gl4 <- function(gl,
   return(mx)
 }
 
-#' Marginal likelihood under null using offspring genotype log-likelihoods and parent genotypes
+#' Marginal likelihood, double reduction, preferential pairing, genotype likelihoods.
 #'
-#' @param gl A matrix of offspring genotype log-likelihoods. The rows index the
+#' @param gl A matrix of genotype log-likelihoods. The rows index the
 #'     individuals and the columns index the possible genotypes. So
-#'     \code{gl[i, k]} is the offspring genotype log-likelihood for individual i and
+#'     \code{gl[i, k]} is the genotype log-likelihood for individual i and
 #'     genotype k-1.
-#' @param p1 Genotype of parent 1.
-#' @param p2 Genotype of parent 2.
+#' @param p1_gl The vector of genotype likelihoods of parent 1.
+#' @param p1_gl The vector of genotype likelihoods of parent 2.
+#' @param mixprop The mixing proportion with the uniform for mixing purposes.
+#' @param lg A logical. Should we log the marginal likelihood (\code{TRUE})
+#'     or not (\code{FALSE})?
+#' @param ... Additional paramters sent to \code{\link[stan]{sampling}()}.
+#'
+#' @author Mira Thakkar and David Gerard
 #'
 #' @examples
 #' gl <- matrix(runif(20), ncol = 5)
-#' marg_f1_dr_pp_gl4(gl = gl, p1 = 2, p2 = 3)
+#' marg_f1_dr_pp_gl4(gl = gl)
 #'
 #' @export
-marg_f1_dr_pp_glpknown4 <- function(gl,
-                              p1,
-                              p2,
+marg_f1_dr_pp_gl4 <- function(gl,
+                              p1_gl = rep(log(0.2), 5),
+                              p2_gl = rep(log(0.2), 5),
                               mixprop = 0.001,
-                              lg = TRUE, ...) {
+                              lg = TRUE,
+                              ...) {
   stopifnot(ncol(gl) == 5,
-            length(p1) == 1,
-            length(p2) == 1,
+            length(p1_gl) == 5,
+            length(p2_gl) == 5,
             length(mixprop) == 1)
   stopifnot(mixprop > 0, mixprop <= 1)
   drbound <- hwep::drbounds(ploidy = 4)
-  ppbound <- 1/3
   stan_dat <- list(gl = gl,
                    N = nrow(gl),
                    drbound = drbound,
-                   ppbound = ppbound,
-                   g1 = p1,
-                   g2 = p2,
+                   p1_gl = p1_gl,
+                   p2_gl = p2_gl,
                    mixprop = mixprop)
-  stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_glpknown4,
+  stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_gl4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
