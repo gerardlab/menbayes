@@ -4,7 +4,7 @@
 \alias{marg_f1_dr_pp_glpknown4}
 \title{Marginal likelihood, double reduction, preferential pairing, parent genotypes known, offspring genotypes unknown}
 \usage{
-marg_f1_dr_pp_glpknown4(gl, p1, p2, lg = TRUE, ...)
+marg_f1_dr_pp_glpknown4(gl, p1, p2, mixprop = 0.001, lg = TRUE, ...)
 }
 \arguments{
 \item{gl}{A matrix of offspring genotype log-likelihoods. The rows index the
@@ -15,6 +15,8 @@ genotype k-1.}
 \item{p1}{Genotype of parent 1.}
 
 \item{p2}{Genotype of parent 2.}
+
+\item{mixprop}{The mixing proportion with the uniform for mixing purposes.}
 
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE}) or
 not (\code{FALSE})?}

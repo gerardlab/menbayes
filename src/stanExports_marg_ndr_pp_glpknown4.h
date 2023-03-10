@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_marg_ndr_pp_glpknown4");
-    reader.add_event(80, 78, "end", "model_marg_ndr_pp_glpknown4");
+    reader.add_event(83, 81, "end", "model_marg_ndr_pp_glpknown4");
     return reader;
 }
 template <typename T0__>
@@ -229,6 +229,7 @@ private:
         matrix_d gl;
         int g1;
         int g2;
+        double mixprop;
 public:
     model_marg_ndr_pp_glpknown4(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
@@ -295,13 +296,21 @@ public:
             g2 = vals_i__[pos__++];
             check_greater_or_equal(function__, "g2", g2, 0);
             check_less_or_equal(function__, "g2", g2, 4);
+            current_statement_begin__ = 61;
+            context__.validate_dims("data initialization", "mixprop", "double", context__.to_vec());
+            mixprop = double(0);
+            vals_r__ = context__.vals_r("mixprop");
+            pos__ = 0;
+            mixprop = vals_r__[pos__++];
+            check_greater_or_equal(function__, "mixprop", mixprop, 0.0);
+            check_less_or_equal(function__, "mixprop", mixprop, 1.0);
             // initialize transformed data variables
             // execute transformed data statements
             // validate transformed data
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 64;
+            current_statement_begin__ = 65;
             num_params_r__ += 1;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -320,7 +329,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 64;
+        current_statement_begin__ = 65;
         if (!(context__.contains_r("xi")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable xi missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("xi");
@@ -358,7 +367,7 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 64;
+            current_statement_begin__ = 65;
             local_scalar_t__ xi;
             (void) xi;  // dummy to suppress unused var warning
             if (jacobian__)
@@ -367,32 +376,40 @@ public:
                 xi = in__.scalar_lub_constrain(0, 1);
             // model body
             {
-            current_statement_begin__ = 68;
+            current_statement_begin__ = 69;
             validate_non_negative_index("p1", "3", 3);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
             stan::math::initialize(p1, DUMMY_VAR__);
             stan::math::fill(p1, DUMMY_VAR__);
-            current_statement_begin__ = 69;
+            current_statement_begin__ = 70;
             validate_non_negative_index("p2", "3", 3);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
             stan::math::initialize(p2, DUMMY_VAR__);
             stan::math::fill(p2, DUMMY_VAR__);
-            current_statement_begin__ = 70;
+            current_statement_begin__ = 71;
             validate_non_negative_index("q", "5", 5);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
             stan::math::initialize(q, DUMMY_VAR__);
             stan::math::fill(q, DUMMY_VAR__);
-            current_statement_begin__ = 71;
-            stan::math::assign(p1, segfreq4(xi, g1, pstream__));
             current_statement_begin__ = 72;
-            stan::math::assign(p2, segfreq4(xi, g2, pstream__));
+            validate_non_negative_index("u", "5", 5);
+            Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> u(5);
+            stan::math::initialize(u, DUMMY_VAR__);
+            stan::math::fill(u, DUMMY_VAR__);
+            stan::math::assign(u,transpose(stan::math::to_row_vector(stan::math::array_builder<double >().add(0.2).add(0.2).add(0.2).add(0.2).add(0.2).array())));
             current_statement_begin__ = 73;
-            stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
+            stan::math::assign(p1, segfreq4(xi, g1, pstream__));
             current_statement_begin__ = 74;
-            lp_accum__.add(beta_log(xi, 1.0, 2.0));
+            stan::math::assign(p2, segfreq4(xi, g2, pstream__));
             current_statement_begin__ = 75;
+            stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
+            current_statement_begin__ = 76;
+            stan::math::assign(q, add(multiply((1.0 - mixprop), q), multiply(mixprop, u)));
+            current_statement_begin__ = 77;
+            lp_accum__.add(beta_log(xi, 1.0, 2.0));
+            current_statement_begin__ = 78;
             for (int ind = 1; ind <= N; ++ind) {
-                current_statement_begin__ = 76;
+                current_statement_begin__ = 79;
                 lp_accum__.add(log_sum_exp(add(to_vector(get_base1(gl, ind, "gl", 1)), stan::math::log(q))));
             }
             }

@@ -75,6 +75,7 @@ marg_f1_ndr_npp_glpknown4 <- function(gl,
 marg_f1_dr_npp_glpknown4 <- function(gl,
                                      p1,
                                      p2,
+                                     mixprop = 0.001,
                                      lg = TRUE,
                                      ...) {
   stopifnot(ncol(gl) == 5,
@@ -85,7 +86,8 @@ marg_f1_dr_npp_glpknown4 <- function(gl,
                    N = nrow(gl),
                    drbound = drbound,
                    g1 = p1,
-                   g2 = p2)
+                   g2 = p2,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$marg_dr_npp_glpknown4,
                               data = stan_dat,
                               verbose = FALSE,
@@ -133,6 +135,7 @@ marg_f1_dr_npp_glpknown4 <- function(gl,
 marg_f1_ndr_pp_glpknown4 <- function(gl,
                                      p1,
                                      p2,
+                                     mixprop = 0.001,
                                      lg = TRUE,
                                      ...) {
   stopifnot(ncol(gl) == 5,
@@ -141,7 +144,8 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
   stan_dat <- list(gl = gl,
                    N = nrow(gl),
                    g1 = p1,
-                   g2 = p2)
+                   g2 = p2,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$marg_ndr_pp_glpknown4,
                               data = stan_dat,
                               verbose = FALSE,
@@ -165,6 +169,7 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
 #'     genotype k-1.
 #' @param p1 Genotype of parent 1.
 #' @param p2 Genotype of parent 2.
+#' @param mixprop The mixing proportion with the uniform for mixing purposes.
 #' @param lg A logical. Should we log the marginal likelihood (\code{TRUE}) or
 #'     not (\code{FALSE})?
 #' @param ... Additional paramters sent to \code{\link[stan]{sampling}()}.
@@ -196,6 +201,7 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
 marg_f1_dr_pp_glpknown4 <- function(gl,
                                     p1,
                                     p2,
+                                    mixprop = 0.001,
                                     lg = TRUE,
                                     ...) {
   stopifnot(ncol(gl) == 5,
@@ -206,7 +212,8 @@ marg_f1_dr_pp_glpknown4 <- function(gl,
                    N = nrow(gl),
                    drbound = drbound,
                    g1 = p1,
-                   g2 = p2)
+                   g2 = p2,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_glpknown4,
                               data = stan_dat,
                               verbose = FALSE,
