@@ -4,7 +4,7 @@
 \alias{marg_alt_gl}
 \title{Marginal likelihood under alternative using genotype log-likelihoods}
 \usage{
-marg_alt_gl(gl, beta, lg = TRUE, ...)
+marg_alt_gl(gl, beta = rep(1, 5), lg = TRUE, ...)
 }
 \arguments{
 \item{gl}{A matrix of genotype log-likelihoods. The rows index the
@@ -27,9 +27,8 @@ Marginal likelihood under alternative using genotype log-likelihoods
 }
 \examples{
 x <- c(1, 2, 7, 3, 3)
-beta <- rep(1, 5)
 gl <- hwep::simgl(nvec = x, rdepth = 100, od = 0, bias = 1, seq = 0)
-marg_alt_gl(gl = gl, beta = beta, chains = 1)
+marg_alt_gl(gl = gl, chains = 1)
 
 }
 \author{

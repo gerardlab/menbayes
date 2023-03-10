@@ -102,7 +102,21 @@ offspring_geno <- function(x, n){
   sim_gen <- c(stats::rmultinom(n = 1, size = n, prob = x))
 
   return(sim_gen)
+}
 
+#' Converts genotype counts to genotype vectors.
+#'
+#' @param gcount The vector of genotype counts.
+#'
+#' @author David Gerard
+#'
+#' @export
+#'
+#' @examples
+#' gcount <- c(1, 2, 3, 0, 5)
+#' gcount_to_gvec(gcount = gcount)
+gcount_to_gvec <- function(gcount) {
+  unlist(mapply(FUN = rep, x = seq_along(gcount) - 1, each = gcount))
 }
 
 #' Function which takes as input (i) the parent genotypes,
@@ -124,10 +138,7 @@ offspring_geno <- function(x, n){
 #'
 #' @examples
 #' po_gl()
-
-
 po_gl <- function(genovec, p1_geno, p2_geno, ploidy, seq = 0.01, rd = 10, bias = 1, od = 0.01) {
-
   n <- length(genovec)
   sizevec <- rep(rd, length.out = n)
   refvec <- updog::rflexdog(sizevec = sizevec, geno = genovec, ploidy = ploidy, seq = seq, bias = bias, od = od)

@@ -58,14 +58,13 @@ data {
   int N;
   matrix[N, 5] gl; // genotype log-likelihoods for offspring
   real<lower=0.0,upper=1.0> drbound; // upper bound of double reduction rate
-  real<lower=0.0,upper=1.0> ppbound; //upper bound of preferential pairing rate
   int<lower=0,upper=4> g1; // first parent genotype
   int<lower=0,upper=4> g2; // second parent genotype
 }
 
 parameters {
   real<lower=0,upper=drbound> alpha; // double reduction rate
-  real<lower=0,upper=ppbound> xi; // preferential pairing rate
+  real<lower=0,upper=1> xi; // preferential pairing rate
 }
 
 model {

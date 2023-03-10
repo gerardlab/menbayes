@@ -13,12 +13,11 @@
 #'
 #' @examples
 #' x <- c(1, 2, 7, 3, 3)
-#' beta <- rep(1, 5)
 #' gl <- hwep::simgl(nvec = x, rdepth = 100, od = 0, bias = 1, seq = 0)
-#' marg_alt_gl(gl = gl, beta = beta, chains = 1)
+#' marg_alt_gl(gl = gl, chains = 1)
 #'
 #' @export
-marg_alt_gl <- function(gl, beta, lg = TRUE, ...) {
+marg_alt_gl <- function(gl, beta = rep(1, 5), lg = TRUE, ...) {
   ploidy <- ncol(gl) - 1
   nind <- nrow(gl)
   stopifnot(ncol(gl) == length(beta))

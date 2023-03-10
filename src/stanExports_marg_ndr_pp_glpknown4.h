@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_marg_ndr_pp_glpknown4");
-    reader.add_event(81, 79, "end", "model_marg_ndr_pp_glpknown4");
+    reader.add_event(80, 78, "end", "model_marg_ndr_pp_glpknown4");
     return reader;
 }
 template <typename T0__>
@@ -227,7 +227,6 @@ class model_marg_ndr_pp_glpknown4
 private:
         int N;
         matrix_d gl;
-        double ppbound;
         int g1;
         int g2;
 public:
@@ -281,14 +280,6 @@ public:
                 }
             }
             current_statement_begin__ = 59;
-            context__.validate_dims("data initialization", "ppbound", "double", context__.to_vec());
-            ppbound = double(0);
-            vals_r__ = context__.vals_r("ppbound");
-            pos__ = 0;
-            ppbound = vals_r__[pos__++];
-            check_greater_or_equal(function__, "ppbound", ppbound, 0.0);
-            check_less_or_equal(function__, "ppbound", ppbound, 1.0);
-            current_statement_begin__ = 60;
             context__.validate_dims("data initialization", "g1", "int", context__.to_vec());
             g1 = int(0);
             vals_i__ = context__.vals_i("g1");
@@ -296,7 +287,7 @@ public:
             g1 = vals_i__[pos__++];
             check_greater_or_equal(function__, "g1", g1, 0);
             check_less_or_equal(function__, "g1", g1, 4);
-            current_statement_begin__ = 61;
+            current_statement_begin__ = 60;
             context__.validate_dims("data initialization", "g2", "int", context__.to_vec());
             g2 = int(0);
             vals_i__ = context__.vals_i("g2");
@@ -310,7 +301,7 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 65;
+            current_statement_begin__ = 64;
             num_params_r__ += 1;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -329,7 +320,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 65;
+        current_statement_begin__ = 64;
         if (!(context__.contains_r("xi")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable xi missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("xi");
@@ -338,7 +329,7 @@ public:
         double xi(0);
         xi = vals_r__[pos__++];
         try {
-            writer__.scalar_lub_unconstrain(0, ppbound, xi);
+            writer__.scalar_lub_unconstrain(0, 1, xi);
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable xi: ") + e.what()), current_statement_begin__, prog_reader__());
         }
@@ -367,41 +358,41 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 65;
+            current_statement_begin__ = 64;
             local_scalar_t__ xi;
             (void) xi;  // dummy to suppress unused var warning
             if (jacobian__)
-                xi = in__.scalar_lub_constrain(0, ppbound, lp__);
+                xi = in__.scalar_lub_constrain(0, 1, lp__);
             else
-                xi = in__.scalar_lub_constrain(0, ppbound);
+                xi = in__.scalar_lub_constrain(0, 1);
             // model body
             {
-            current_statement_begin__ = 69;
+            current_statement_begin__ = 68;
             validate_non_negative_index("p1", "3", 3);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p1(3);
             stan::math::initialize(p1, DUMMY_VAR__);
             stan::math::fill(p1, DUMMY_VAR__);
-            current_statement_begin__ = 70;
+            current_statement_begin__ = 69;
             validate_non_negative_index("p2", "3", 3);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> p2(3);
             stan::math::initialize(p2, DUMMY_VAR__);
             stan::math::fill(p2, DUMMY_VAR__);
-            current_statement_begin__ = 71;
+            current_statement_begin__ = 70;
             validate_non_negative_index("q", "5", 5);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> q(5);
             stan::math::initialize(q, DUMMY_VAR__);
             stan::math::fill(q, DUMMY_VAR__);
-            current_statement_begin__ = 72;
+            current_statement_begin__ = 71;
             stan::math::assign(p1, segfreq4(xi, g1, pstream__));
-            current_statement_begin__ = 73;
+            current_statement_begin__ = 72;
             stan::math::assign(p2, segfreq4(xi, g2, pstream__));
-            current_statement_begin__ = 74;
+            current_statement_begin__ = 73;
             stan::math::assign(q, convolve(p1, p2, 4, 3, pstream__));
-            current_statement_begin__ = 75;
+            current_statement_begin__ = 74;
             lp_accum__.add(beta_log(xi, 1.0, 2.0));
-            current_statement_begin__ = 76;
+            current_statement_begin__ = 75;
             for (int ind = 1; ind <= N; ++ind) {
-                current_statement_begin__ = 77;
+                current_statement_begin__ = 76;
                 lp_accum__.add(log_sum_exp(add(to_vector(get_base1(gl, ind, "gl", 1)), stan::math::log(q))));
             }
             }
@@ -447,7 +438,7 @@ public:
         static const char* function__ = "model_marg_ndr_pp_glpknown4_namespace::write_array";
         (void) function__;  // dummy to suppress unused var warning
         // read-transform, write parameters
-        double xi = in__.scalar_lub_constrain(0, ppbound);
+        double xi = in__.scalar_lub_constrain(0, 1);
         vars__.push_back(xi);
         double lp__ = 0.0;
         (void) lp__;  // dummy to suppress unused var warning
