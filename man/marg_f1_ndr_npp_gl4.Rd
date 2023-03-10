@@ -26,8 +26,25 @@ or not (\code{FALSE})?}
 Marginal likelihood, no double reduction, no preferential pairing, genotype likelihoods.
 }
 \examples{
-gl <- matrix(runif(20), ncol = 5)
-marg_f1_dr_npp_gl4(gl = gl)
+## null sims
+set.seed(1)
+gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = 2, p2 = 2)
+gcount <- offspring_geno(x = gf, n = 20)
+gvec <- gcount_to_gvec(gcount)
+fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+gl <- fout$genologlike
+mnull <- marg_f1_ndr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf))
+malt <- -48.81 ## result of running marg_alt_gl(gl)
+mnull - malt ## log-BF
+
+## alt sims
+set.seed(1)
+gvec <- rep(0:4, each = 4)
+fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+gl <- fout$genologlike
+mnull <- marg_f1_ndr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf))
+malt <- -46.82 ## result of running marg_alt_gl(gl)
+mnull - malt ## log-BF
 
 }
 \author{

@@ -43,15 +43,51 @@ marg_alt_gl <- function(gl, beta = rep(1, 5), lg = TRUE, ...) {
 #' @author Mira Thakkar and David Gerard
 #'
 #' @examples
-#' gl <- matrix(runif(20), ncol = 5)
-#' marg_f1_dr_npp_gl4(gl = gl)
+#' ## null sims
+#' set.seed(1)
+#' gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = 2, p2 = 2)
+#' gcount <- offspring_geno(x = gf, n = 20)
+#' gvec <- gcount_to_gvec(gcount)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_ndr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf))
+#' malt <- -48.81 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#'
+#' ## alt sims
+#' set.seed(1)
+#' gvec <- rep(0:4, each = 4)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_ndr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf))
+#' malt <- -46.82 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
 #'
 #' @export
 marg_f1_ndr_npp_gl4 <- function(gl,
                                 p1_gl = rep(log(0.2), 5),
                                 p2_gl = rep(log(0.2), 5),
                                 lg = TRUE) {
-
+  stopifnot(ncol(gl) == 5,
+            length(p1_gl) == 5,
+            length(p2_gl) == 5)
+  p1_gl <- p1_gl - updog::log_sum_exp(p1_gl)
+  p2_gl <- p2_gl - updog::log_sum_exp(p2_gl)
+  glmat <- matrix(data = NA_real_, nrow = 5, ncol = 5)
+  for (i in 0:4) {
+    for (j in 0:4) {
+      gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = i, p2 = j)
+      lgf <- log(gf)
+      glmat[i + 1, j + 1] <- sum(apply(X = t(gl) + lgf, MARGIN = 2, FUN = updog::log_sum_exp)) +
+        p1_gl[[i + 1]] +
+        p2_gl[[j + 1]]
+    }
+  }
+  mx <- updog::log_sum_exp(glmat)
+  if(!lg) {
+    mx <- exp(mx)
+  }
+  return(mx)
 }
 
 #' Marginal likelihood, double reduction, no preferential pairing, genotype likelihoods.
@@ -61,8 +97,27 @@ marg_f1_ndr_npp_gl4 <- function(gl,
 #' @author Mira Thakkar and David Gerard
 #'
 #' @examples
-#' gl <- matrix(runif(20), ncol = 5)
-#' marg_f1_dr_npp_gl4(gl = gl)
+#' \dontrun{
+#' ## null sims
+#' set.seed(1)
+#' gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = 2, p2 = 2)
+#' gcount <- offspring_geno(x = gf, n = 20)
+#' gvec <- gcount_to_gvec(gcount)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_dr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' malt <- -48.81 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#'
+#' ## alt sims
+#' set.seed(1)
+#' gvec <- rep(0:4, each = 4)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_dr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' malt <- -46.82 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#' }
 #'
 #' @export
 marg_f1_dr_npp_gl4 <- function(gl,
@@ -76,6 +131,8 @@ marg_f1_dr_npp_gl4 <- function(gl,
             length(p2_gl) == 5,
             length(mixprop) == 1)
   stopifnot(mixprop > 0, mixprop <= 1)
+  p1_gl <- p1_gl - updog::log_sum_exp(p1_gl)
+  p2_gl <- p2_gl - updog::log_sum_exp(p2_gl)
   drbound <- hwep::drbounds(ploidy = 4)
   stan_dat <- list(gl = gl,
                    N = nrow(gl),
@@ -105,8 +162,27 @@ marg_f1_dr_npp_gl4 <- function(gl,
 #' @author Mira Thakkar and David Gerard
 #'
 #' @examples
-#' gl <- matrix(runif(20), ncol = 5)
-#' marg_f1_dr_npp_gl4(gl = gl)
+#' \dontrun{
+#' ## null sims
+#' set.seed(1)
+#' gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = 2, p2 = 2)
+#' gcount <- offspring_geno(x = gf, n = 20)
+#' gvec <- gcount_to_gvec(gcount)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_ndr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' malt <- -48.81 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#'
+#' ## alt sims
+#' set.seed(1)
+#' gvec <- rep(0:4, each = 4)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_ndr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' malt <- -46.82 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#' }
 #'
 #' @export
 marg_f1_ndr_pp_gl4 <- function(gl,
@@ -120,6 +196,8 @@ marg_f1_ndr_pp_gl4 <- function(gl,
             length(p2_gl) == 5,
             length(mixprop) == 1)
   stopifnot(mixprop > 0, mixprop <= 1)
+  p1_gl <- p1_gl - updog::log_sum_exp(p1_gl)
+  p2_gl <- p2_gl - updog::log_sum_exp(p2_gl)
   stan_dat <- list(gl = gl,
                    N = nrow(gl),
                    p1_gl = p1_gl,
@@ -156,8 +234,27 @@ marg_f1_ndr_pp_gl4 <- function(gl,
 #' @author Mira Thakkar and David Gerard
 #'
 #' @examples
-#' gl <- matrix(runif(20), ncol = 5)
-#' marg_f1_dr_pp_gl4(gl = gl)
+#' \dontrun{
+#' ## null sims
+#' set.seed(1)
+#' gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = 2, p2 = 2)
+#' gcount <- offspring_geno(x = gf, n = 20)
+#' gvec <- gcount_to_gvec(gcount)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_dr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' malt <- -48.81 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#'
+#' ## alt sims
+#' set.seed(1)
+#' gvec <- rep(0:4, each = 4)
+#' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
+#' gl <- fout$genologlike
+#' mnull <- marg_f1_dr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' malt <- -46.82 ## result of running marg_alt_gl(gl)
+#' mnull - malt ## log-BF
+#' }
 #'
 #' @export
 marg_f1_dr_pp_gl4 <- function(gl,
@@ -171,6 +268,8 @@ marg_f1_dr_pp_gl4 <- function(gl,
             length(p2_gl) == 5,
             length(mixprop) == 1)
   stopifnot(mixprop > 0, mixprop <= 1)
+  p1_gl <- p1_gl - updog::log_sum_exp(p1_gl)
+  p2_gl <- p2_gl - updog::log_sum_exp(p2_gl)
   drbound <- hwep::drbounds(ploidy = 4)
   stan_dat <- list(gl = gl,
                    N = nrow(gl),
