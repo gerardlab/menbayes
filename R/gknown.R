@@ -2,6 +2,53 @@
 ## Methods when genotypes are known
 ###################
 
+#' Stan version of marg_alt_g(). Not to be used.
+#'
+#' @noRd
+marg_alt_g_stan <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
+  ploidy <- length(x) - 1
+  stopifnot(length(x) == length(beta))
+  stan_dat <- list(K = ploidy, x = x, beta = beta)
+  stan_out <- rstan::sampling(object = stanmodels$alt_g,
+                              data = stan_dat,
+                              verbose = FALSE,
+                              show_messages = FALSE,
+                              ...)
+  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
+
+  if (lg) {
+    mx <- bridge_out$logml
+  } else {
+    mx <- exp(bridge_out$logml)
+  }
+  return(mx)
+}
+
+#' Density of dirichlet-multinomial
+#'
+#' @param x the counts
+#' @param alpha the dirichlet parameters
+#' @param lg should we log marginal likelihood?
+#'
+#' @noRd
+ddirmult <- function (x, alpha, lg = FALSE)
+{
+    stopifnot(length(x) == length(alpha))
+    stopifnot(all(alpha > 0))
+    asum <- sum(alpha)
+    n <- sum(x)
+    ll <- lgamma(asum) +
+      lgamma(n + 1) -
+      lgamma(n + asum) +
+      sum(lgamma(x + alpha)) -
+      sum(lgamma(alpha)) -
+      sum(lgamma(x + 1))
+    if (!lg) {
+        ll <- exp(ll)
+    }
+    return(ll)
+}
+
 #' Marginal likelihood under alternative when genotypes are known
 #'
 #' @param x The genotype counts
@@ -21,19 +68,7 @@
 marg_alt_g <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
   ploidy <- length(x) - 1
   stopifnot(length(x) == length(beta))
-  stan_dat <- list(K = ploidy, x = x, beta = beta)
-  stan_out <- rstan::sampling(object = stanmodels$alt_g,
-                              data = stan_dat,
-                              verbose = FALSE,
-                              show_messages = FALSE,
-                              ...)
-  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
-
-  if (lg) {
-    mx <- bridge_out$logml
-  } else {
-    mx <- exp(bridge_out$logml)
-  }
+  mx <- ddirmult(x = x, alpha = beta, lg = lg)
   return(mx)
 }
 
