@@ -151,3 +151,32 @@ po_gl <- function(genovec, p1_geno, p2_geno, ploidy, seq = 0.01, rd = 10, bias =
 
   return(fout)
 }
+
+
+###Test
+
+po_gl_m <- function(genovec, p1_geno, p2_geno, ploidy, seq = 0.01, rd = 10, bias = 1, od = 0.01) {
+
+  n <- length(genovec)
+  sizevec <- rep(rd, length.out = n)
+  refvec <- updog::rflexdog(sizevec = sizevec, geno = genovec, ploidy = ploidy, seq = seq, bias = bias, od = od)
+  p1ref <- updog::rflexdog(sizevec = rd, geno = p1_geno, ploidy = ploidy, seq = seq, bias = bias, od = od)
+  p2ref <- updog::rflexdog(sizevec = rd, geno = p2_geno, ploidy = ploidy, seq = seq, bias = bias, od = od)
+
+  fout <- updog::flexdog_full(refvec = refvec,
+                              sizevec = sizevec,
+                              ploidy = ploidy,
+                              model = "f1pp",
+                              seq = seq,
+                              bias = bias,
+                              od = od,
+                              update_bias = FALSE,
+                              update_seq = FALSE,
+                              update_od = FALSE,
+                              p1ref = p1ref,
+                              p1size = rd,
+                              p2ref = p2ref,
+                              p2size = rd)
+
+  return(fout$genologlike)
+}

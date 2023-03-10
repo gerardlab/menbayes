@@ -1,31 +1,30 @@
 // Tetraploid F1 test
-// Double reduction and preferential pairing
-// parental genotypes are known
+// No double reduction and preferential pairing
+// parental genotypes are known, offspring genotype likelihoods are used
 
 functions {
-  // alpha Double reduction rate
   // xi Preferential pairing rate
   // g parent genotype
   // khalf ploidy / 2 + 1
   // return: gamete frequencies of a parent
-  vector segfreq4(real alpha, real xi, int g) {
+  vector segfreq4(real xi, int g) {
     vector[3] p;
     if (g == 0) {
       p[1] = 1.0;
       p[2] = 0.0;
       p[3] = 0.0;
     } else if (g == 1) {
-      p[1] = 0.5 + (0.25 * alpha);
-      p[2] = 0.5 - (0.5 * alpha);
-      p[3] = alpha / 4.0;
+      p[1] = 0.5;
+      p[2] = 0.5;
+      p[3] = 0;
     } else if (g == 2) {
-      p[1] = (0.5 * alpha) + (0.25 * (1 - alpha) * (1 - xi));
-      p[2] = 0.5 * (1 - alpha) * (1 + xi);
-      p[3] = (0.5 * alpha) + (0.25 * (1 - alpha) * (1 - xi));
+      p[1] = 0.25 * (1 - xi);
+      p[2] = 0.5 * (1 + xi);
+      p[3] = 0.25 * (1 - xi);
     } else if (g == 3) {
-      p[1] = alpha / 4.0;
-      p[2] = 0.5 - (0.5 * alpha);
-      p[3] = 0.5 + (0.25 * alpha);
+      p[1] = 0;
+      p[2] = 0.5;
+      p[3] = 0.5;
     } else if (g == 4) {
       p[1] = 0.0;
       p[2] = 0.0;
@@ -57,14 +56,12 @@ functions {
 data {
   int N;
   matrix[N, 5] gl; // genotype log-likelihoods for offspring
-  real<lower=0.0,upper=1.0> drbound; // upper bound of double reduction rate
   real<lower=0.0,upper=1.0> ppbound; //upper bound of preferential pairing rate
   int<lower=0,upper=4> g1; // first parent genotype
   int<lower=0,upper=4> g2; // second parent genotype
 }
 
 parameters {
-  real<lower=0,upper=drbound> alpha; // double reduction rate
   real<lower=0,upper=ppbound> xi; // preferential pairing rate
 }
 
@@ -72,10 +69,9 @@ model {
   vector[3] p1;
   vector[3] p2;
   vector[5] q;
-  p1 = segfreq4(alpha, xi, g1);
-  p2 = segfreq4(alpha, xi, g2);
+  p1 = segfreq4(xi, g1);
+  p2 = segfreq4(xi, g2);
   q = convolve(p1, p2, 4, 3);
-  target += uniform_lpdf(alpha | 0.0, drbound);
   target += beta_lpdf(xi | 1.0, 2.0);
   for (ind in 1:N) {
     target += log_sum_exp(to_vector(gl[ind]) + log(q));
