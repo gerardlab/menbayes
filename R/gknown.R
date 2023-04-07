@@ -131,6 +131,7 @@ marg_f1_dr_npp_g4 <- function(x,
                               g1,
                               g2,
                               lg = TRUE,
+                              output = c("marg", "all"),
                               ...) {
   stopifnot(length(x) == 5,
             length(g1) == 1,
@@ -153,7 +154,17 @@ marg_f1_dr_npp_g4 <- function(x,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
+
 }
 
 #' Marginal likelihood, no double reduction, preferential pairing, genotypes known.
@@ -183,6 +194,7 @@ marg_f1_ndr_pp_g4 <- function(x,
                               g1,
                               g2,
                               lg = TRUE,
+                              output = c("marg", "all"),
                               ...) {
   stopifnot(length(x) == 5,
             length(g1) == 1,
@@ -203,7 +215,16 @@ marg_f1_ndr_pp_g4 <- function(x,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }
 
 #' Marginal likelihood in tetraploid F1 population
@@ -216,6 +237,8 @@ marg_f1_ndr_pp_g4 <- function(x,
 #' @param g2 The second parent's genotype.
 #' @param lg A logical. Should we log the marginal likelihood (\code{TRUE})
 #'     or not (\code{FALSE})?
+#' @param output Return either the marginal likelihood with (\code{"marg"})
+#'    or the full STAN output with (\code{"all"}).
 #' @param ... Additional arguments to pass to \code{\link[stan]{sampling}()}.
 #'
 #' @author Mira Thakkar and David Gerard
@@ -240,6 +263,7 @@ marg_f1_dr_pp_g4 <- function(x,
                              g1,
                              g2,
                              lg = TRUE,
+                             output = c("marg", "all"),
                              ...) {
   stopifnot(length(x) == 5,
             length(g1) == 1,
@@ -262,5 +286,41 @@ marg_f1_dr_pp_g4 <- function(x,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
+}
+
+#' Chi Square test when genotypes are known
+#'
+#' @param y Vector of observed genotype counts
+#' @param l1 Parent 1's genotype
+#' @param l2 Parent 2's genotype
+#'
+#' @return The Chi Square statistic and p-value
+#'
+#' @author Mira Thakkar and David Gerard
+#'
+#' @examples
+#' y <- c(1, 2, 4, 3, 0)
+#' l1 <- 2
+#' l2 <- 2
+#' chisq_g4(y, l1, l2)
+#'
+#' @export
+chisq_g4 <- function(y, l1, l2){
+  gf <- menbayes::offspring_gf(alpha = 0, xi = 1/3, p1 = l1, p2 = l2)
+  n <- sum(y)
+  geno <- gf * n
+  table <- matrix(c(y, geno), ncol= 2, byrow = TRUE)
+  result <- stats::chisq.test(table)
+  output <- list(test_statistic = result$statistic, p_value = result$p.value)
+  return(output)
 }

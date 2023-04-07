@@ -229,7 +229,7 @@ marg_f1_ndr_pp_gl4 <- function(gl,
 #' @param mixprop The mixing proportion with the uniform for mixing purposes.
 #' @param lg A logical. Should we log the marginal likelihood (\code{TRUE})
 #'     or not (\code{FALSE})?
-#' @param ... Additional paramters sent to \code{\link[stan]{sampling}()}.
+#' @param ... Additional parameters sent to \code{\link[stan]{sampling}()}.
 #'
 #' @author Mira Thakkar and David Gerard
 #'
