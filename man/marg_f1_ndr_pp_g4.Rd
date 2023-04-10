@@ -4,7 +4,7 @@
 \alias{marg_f1_ndr_pp_g4}
 \title{Marginal likelihood, no double reduction, preferential pairing, genotypes known.}
 \usage{
-marg_f1_ndr_pp_g4(x, g1, g2, lg = TRUE, ...)
+marg_f1_ndr_pp_g4(x, g1, g2, lg = TRUE, output = c("marg", "all"), ...)
 }
 \arguments{
 \item{x}{The genotype counts of the offspring. \code{x[i]} is the
@@ -16,6 +16,9 @@ number of offspring with genotype \code{i-1}.}
 
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE})
 or not (\code{FALSE})?}
+
+\item{output}{Return either the marginal likelihood with (\code{"marg"})
+or the full STAN output with (\code{"all"}).}
 
 \item{...}{Additional arguments to pass to \code{\link[stan]{sampling}()}.}
 }
