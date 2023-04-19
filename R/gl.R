@@ -67,7 +67,8 @@ marg_alt_gl <- function(gl, beta = rep(1, 5), lg = TRUE, ...) {
 marg_f1_ndr_npp_gl4 <- function(gl,
                                 p1_gl = rep(log(0.2), 5),
                                 p2_gl = rep(log(0.2), 5),
-                                lg = TRUE) {
+                                lg = TRUE,
+                                output = c("marg", "all"), ...) {
   stopifnot(ncol(gl) == 5,
             length(p1_gl) == 5,
             length(p2_gl) == 5)
@@ -83,11 +84,21 @@ marg_f1_ndr_npp_gl4 <- function(gl,
         p2_gl[[j + 1]]
     }
   }
-  mx <- updog::log_sum_exp(glmat)
-  if(!lg) {
-    mx <- exp(mx)
+  if (lg) {
+    mx <- bridge_out$logml
+  } else {
+    mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }
 
 #' Marginal likelihood, double reduction, no preferential pairing, genotype likelihoods.
@@ -125,6 +136,7 @@ marg_f1_dr_npp_gl4 <- function(gl,
                                p2_gl = rep(log(0.2), 5),
                                mixprop = 0.001,
                                lg = TRUE,
+                               output = c("marg", "all"),
                                ...) {
   stopifnot(ncol(gl) == 5,
             length(p1_gl) == 5,
@@ -152,7 +164,16 @@ marg_f1_dr_npp_gl4 <- function(gl,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }
 
 #' Marginal likelihood, no double reduction, preferential pairing, genotype likelihoods.
@@ -190,6 +211,7 @@ marg_f1_ndr_pp_gl4 <- function(gl,
                                p2_gl = rep(log(0.2), 5),
                                mixprop = 0.001,
                                lg = TRUE,
+                               output = c("marg", "all"),
                                ...) {
   stopifnot(ncol(gl) == 5,
             length(p1_gl) == 5,
@@ -215,7 +237,16 @@ marg_f1_ndr_pp_gl4 <- function(gl,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }
 
 #' Marginal likelihood, double reduction, preferential pairing, genotype likelihoods.
@@ -262,6 +293,7 @@ marg_f1_dr_pp_gl4 <- function(gl,
                               p2_gl = rep(log(0.2), 5),
                               mixprop = 0.001,
                               lg = TRUE,
+                              output = c("marg", "all"),
                               ...) {
   stopifnot(ncol(gl) == 5,
             length(p1_gl) == 5,
@@ -289,5 +321,25 @@ marg_f1_dr_pp_gl4 <- function(gl,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
+}
+
+## Chi-Sq for GL
+chisq_gl4 <- function(gl, l1, l2){
+  ploidy <- 4
+  col_max <- apply(gl, 1, which.max) - 1
+  col_max <- factor(col_max, levels = 0:ploidy)
+  y <- c(table(col_max))
+  output <- chisq_g4(y = y, l1 = l1, l2 = l2)
+
+  return(output)
 }
