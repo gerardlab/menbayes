@@ -77,6 +77,7 @@ marg_f1_dr_npp_glpknown4 <- function(gl,
                                      p2,
                                      mixprop = 0.001,
                                      lg = TRUE,
+                                     output = c("marg", "all"),
                                      ...) {
   stopifnot(ncol(gl) == 5,
             length(p1) == 1,
@@ -100,7 +101,16 @@ marg_f1_dr_npp_glpknown4 <- function(gl,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }
 
 
@@ -137,6 +147,7 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
                                      p2,
                                      mixprop = 0.001,
                                      lg = TRUE,
+                                     output = c("marg", "all"),
                                      ...) {
   stopifnot(ncol(gl) == 5,
             length(p1) == 1,
@@ -158,7 +169,16 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }
 
 #' Marginal likelihood, double reduction, preferential pairing, parent genotypes known, offspring genotypes unknown
@@ -203,6 +223,7 @@ marg_f1_dr_pp_glpknown4 <- function(gl,
                                     p2,
                                     mixprop = 0.001,
                                     lg = TRUE,
+                                    output = c("marg", "all"),
                                     ...) {
   stopifnot(ncol(gl) == 5,
             length(p1) == 1,
@@ -226,5 +247,14 @@ marg_f1_dr_pp_glpknown4 <- function(gl,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
 }

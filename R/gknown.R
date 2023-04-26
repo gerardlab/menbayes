@@ -314,13 +314,32 @@ marg_f1_dr_pp_g4 <- function(x,
 #' l2 <- 2
 #' chisq_g4(y, l1, l2)
 #'
+#' y <- c(10, 25, 10, 0, 0)
+#' l1 <- 1
+#' l2 <- 1
+#' chisq_g4(y, l1, l2)
+#'
 #' @export
 chisq_g4 <- function(y, l1, l2){
+  TOL <- sqrt(.Machine$double.eps)
   gf <- menbayes::offspring_gf(alpha = 0, xi = 1/3, p1 = l1, p2 = l2)
-  n <- sum(y)
-  geno <- gf * n
-  table <- matrix(c(y, geno), ncol= 2, byrow = TRUE)
-  result <- stats::chisq.test(table)
-  output <- list(test_statistic = result$statistic, p_value = result$p.value)
-  return(output)
+  which_zero <- gf < TOL
+  gf[which_zero] <- 0
+
+  if (sum(y[which_zero]) > 0.5) { ## if any incompatibility, p-value is 0
+    ret <- list(statistic = Inf,
+                p_value = 0,
+                df = length(y) - 1)
+    return(ret)
+  } else {
+    y <- y[!which_zero]
+    gf <- gf[!which_zero]
+  }
+
+  chout <- stats::chisq.test(x = y, p = gf)
+  ret <- list(statistic = chout$statistic[[1]],
+              p_value = chout$p.value[[1]],
+              df = chout$parameter[[1]])
+  return(ret)
+
 }

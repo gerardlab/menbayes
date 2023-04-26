@@ -26,7 +26,7 @@ genotype k-1.}
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE})
 or not (\code{FALSE})?}
 
-\item{...}{Additional paramters sent to \code{\link[stan]{sampling}()}.}
+\item{...}{Additional parameters sent to \code{\link[stan]{sampling}()}.}
 }
 \description{
 Marginal likelihood, double reduction, preferential pairing, genotype likelihoods.
