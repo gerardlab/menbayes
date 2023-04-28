@@ -8,7 +8,9 @@ marg_f1_ndr_npp_gl4(
   gl,
   p1_gl = rep(log(0.2), 5),
   p2_gl = rep(log(0.2), 5),
-  lg = TRUE
+  lg = TRUE,
+  output = c("marg", "all"),
+  ...
 )
 }
 \arguments{
@@ -21,6 +23,8 @@ genotype k-1.}
 
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE})
 or not (\code{FALSE})?}
+
+\item{...}{Additional parameters sent to \code{\link[stan]{sampling}()}.}
 }
 \description{
 Marginal likelihood, no double reduction, no preferential pairing, genotype likelihoods.

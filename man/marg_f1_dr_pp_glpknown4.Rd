@@ -4,7 +4,15 @@
 \alias{marg_f1_dr_pp_glpknown4}
 \title{Marginal likelihood, double reduction, preferential pairing, parent genotypes known, offspring genotypes unknown}
 \usage{
-marg_f1_dr_pp_glpknown4(gl, p1, p2, mixprop = 0.001, lg = TRUE, ...)
+marg_f1_dr_pp_glpknown4(
+  gl,
+  p1,
+  p2,
+  mixprop = 0.001,
+  lg = TRUE,
+  output = c("marg", "all"),
+  ...
+)
 }
 \arguments{
 \item{gl}{A matrix of offspring genotype log-likelihoods. The rows index the

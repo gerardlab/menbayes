@@ -10,6 +10,7 @@ marg_f1_dr_pp_gl4(
   p2_gl = rep(log(0.2), 5),
   mixprop = 0.001,
   lg = TRUE,
+  output = c("marg", "all"),
   ...
 )
 }

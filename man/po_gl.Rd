@@ -3,7 +3,7 @@
 \name{po_gl}
 \alias{po_gl}
 \title{Function which takes as input (i) the parent genotypes,
-(ii) the offspring genotypes, (iii) sequencing error rate, (iv) read
+(ii) the offspring genotype freq, (iii) sequencing error rate, (iv) read
 depth, (v) bias, (vi) overdispersion and returns genotype likelihoods.}
 \usage{
 po_gl(
@@ -39,7 +39,7 @@ Genotype likelihoods
 }
 \description{
 Function which takes as input (i) the parent genotypes,
-(ii) the offspring genotypes, (iii) sequencing error rate, (iv) read
+(ii) the offspring genotype freq, (iii) sequencing error rate, (iv) read
 depth, (v) bias, (vi) overdispersion and returns genotype likelihoods.
 }
 \author{
