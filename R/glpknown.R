@@ -271,6 +271,8 @@ marg_f1_dr_pp_glpknown4 <- function(gl,
 #' @param l2 The second parent's genotype.
 #'
 #' @author Mira Thakkar and David Gerard
+#'
+#' @export
 chisq_gl4 <- function(gl, l1, l2){
   ploidy <- 4
   col_max <- apply(gl, 1, which.max) - 1
