@@ -57,6 +57,7 @@ data {
   int<lower=0> x[5]; // genotype counts
   int<lower=0,upper=4> g1; // first parent genotype
   int<lower=0,upper=4> g2; // second parent genotype
+  real<lower=0.0,upper=1.0> mixprop; // mixing component with uniform
 }
 
 parameters {
@@ -67,9 +68,11 @@ model {
   vector[3] p1;
   vector[3] p2;
   vector[5] q;
+  vector[5] u = [0.2, 0.2, 0.2, 0.2, 0.2]';
   p1 = segfreq4(xi, g1);
   p2 = segfreq4(xi, g2);
   q = convolve(p1, p2, 4, 3);
+  q = (1.0 - mixprop) * q + mixprop * u; // mixing to avoid gradient issues
   target += beta_lpdf(xi | 1.0, 2.0);
   target += multinomial_lpmf(x | q);
 }

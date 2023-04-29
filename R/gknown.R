@@ -130,6 +130,7 @@ marg_f1_ndr_npp_g4 <- function(x,
 marg_f1_dr_npp_g4 <- function(x,
                               g1,
                               g2,
+                              mixprop = 0.001,
                               lg = TRUE,
                               output = c("marg", "all"),
                               ...) {
@@ -141,7 +142,8 @@ marg_f1_dr_npp_g4 <- function(x,
   stan_dat <- list(x = x,
                    drbound = drbound,
                    g1 = g1,
-                   g2 = g2)
+                   g2 = g2,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$marg_dr_npp_g4,
                               data = stan_dat,
                               verbose = FALSE,
@@ -193,6 +195,7 @@ marg_f1_dr_npp_g4 <- function(x,
 marg_f1_ndr_pp_g4 <- function(x,
                               g1,
                               g2,
+                              mixprop = 0.001,
                               lg = TRUE,
                               output = c("marg", "all"),
                               ...) {
@@ -202,7 +205,8 @@ marg_f1_ndr_pp_g4 <- function(x,
   stopifnot(g1 >= 0, g1 <= 4, g2 >= 0, g2 <= 4)
   stan_dat <- list(x = x,
                    g1 = g1,
-                   g2 = g2)
+                   g2 = g2,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$marg_ndr_pp_g4,
                               data = stan_dat,
                               verbose = FALSE,
@@ -235,6 +239,7 @@ marg_f1_ndr_pp_g4 <- function(x,
 #'     number of offspring with genotype \code{i-1}.
 #' @param g1 The first parent's genotype.
 #' @param g2 The second parent's genotype.
+#' @param mixprop The mixing proportion with the uniform for mixing purposes.
 #' @param lg A logical. Should we log the marginal likelihood (\code{TRUE})
 #'     or not (\code{FALSE})?
 #' @param output Return either the marginal likelihood with (\code{"marg"})
@@ -262,6 +267,7 @@ marg_f1_ndr_pp_g4 <- function(x,
 marg_f1_dr_pp_g4 <- function(x,
                              g1,
                              g2,
+                             mixprop = 0.001,
                              lg = TRUE,
                              output = c("marg", "all"),
                              ...) {
@@ -273,7 +279,8 @@ marg_f1_dr_pp_g4 <- function(x,
   stan_dat <- list(x = x,
                    drbound = drbound,
                    g1 = g1,
-                   g2 = g2)
+                   g2 = g2,
+                   mixprop = mixprop)
   stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_g4,
                               data = stan_dat,
                               verbose = FALSE,

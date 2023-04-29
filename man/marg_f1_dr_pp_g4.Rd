@@ -4,7 +4,15 @@
 \alias{marg_f1_dr_pp_g4}
 \title{Marginal likelihood in tetraploid F1 population}
 \usage{
-marg_f1_dr_pp_g4(x, g1, g2, lg = TRUE, output = c("marg", "all"), ...)
+marg_f1_dr_pp_g4(
+  x,
+  g1,
+  g2,
+  mixprop = 0.001,
+  lg = TRUE,
+  output = c("marg", "all"),
+  ...
+)
 }
 \arguments{
 \item{x}{The genotype counts of the offspring. \code{x[i]} is the
@@ -13,6 +21,8 @@ number of offspring with genotype \code{i-1}.}
 \item{g1}{The first parent's genotype.}
 
 \item{g2}{The second parent's genotype.}
+
+\item{mixprop}{The mixing proportion with the uniform for mixing purposes.}
 
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE})
 or not (\code{FALSE})?}

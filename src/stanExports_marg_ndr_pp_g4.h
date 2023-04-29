@@ -75,18 +75,21 @@ using stan::math::pow;
 stan::math::profile_map profiles__;
 static int current_statement__= 0;
 static const std::vector<string> locations_array__ = {" (found before start of program)",
-                                                      " (in 'marg_ndr_pp_g4', line 59, column 2 to column 27)",
-                                                      " (in 'marg_ndr_pp_g4', line 62, column 2 to column 15)",
+                                                      " (in 'marg_ndr_pp_g4', line 60, column 2 to column 27)",
                                                       " (in 'marg_ndr_pp_g4', line 63, column 2 to column 15)",
-                                                      " (in 'marg_ndr_pp_g4', line 64, column 2 to column 14)",
-                                                      " (in 'marg_ndr_pp_g4', line 65, column 2 to column 24)",
-                                                      " (in 'marg_ndr_pp_g4', line 66, column 2 to column 24)",
-                                                      " (in 'marg_ndr_pp_g4', line 67, column 2 to column 29)",
-                                                      " (in 'marg_ndr_pp_g4', line 68, column 2 to column 37)",
-                                                      " (in 'marg_ndr_pp_g4', line 69, column 2 to column 36)",
+                                                      " (in 'marg_ndr_pp_g4', line 64, column 2 to column 15)",
+                                                      " (in 'marg_ndr_pp_g4', line 65, column 2 to column 14)",
+                                                      " (in 'marg_ndr_pp_g4', line 66, column 2 to column 43)",
+                                                      " (in 'marg_ndr_pp_g4', line 67, column 2 to column 24)",
+                                                      " (in 'marg_ndr_pp_g4', line 68, column 2 to column 24)",
+                                                      " (in 'marg_ndr_pp_g4', line 69, column 2 to column 29)",
+                                                      " (in 'marg_ndr_pp_g4', line 70, column 2 to column 40)",
+                                                      " (in 'marg_ndr_pp_g4', line 71, column 2 to column 37)",
+                                                      " (in 'marg_ndr_pp_g4', line 72, column 2 to column 36)",
                                                       " (in 'marg_ndr_pp_g4', line 54, column 2 to column 20)",
                                                       " (in 'marg_ndr_pp_g4', line 55, column 2 to column 26)",
                                                       " (in 'marg_ndr_pp_g4', line 56, column 2 to column 26)",
+                                                      " (in 'marg_ndr_pp_g4', line 57, column 2 to column 36)",
                                                       " (in 'marg_ndr_pp_g4', line 10, column 4 to column 16)",
                                                       " (in 'marg_ndr_pp_g4', line 31, column 11 to line 33, column 5)",
                                                       " (in 'marg_ndr_pp_g4', line 28, column 6 to column 17)",
@@ -142,63 +145,63 @@ segfreq4(const T0__& xi, const int& g, std::ostream* pstream__) {
     p = Eigen::Matrix<local_scalar_t__, -1, 1>(3);
     stan::math::fill(p, DUMMY_VAR__);
     
-    current_statement__ = 39;
+    current_statement__ = 42;
     if (logical_eq(g, 0)) {
-      current_statement__ = 35;
+      current_statement__ = 38;
       assign(p, cons_list(index_uni(1), nil_index_list()), 1.0,
         "assigning variable p");
-      current_statement__ = 36;
+      current_statement__ = 39;
       assign(p, cons_list(index_uni(2), nil_index_list()), 0.0,
         "assigning variable p");
-      current_statement__ = 37;
+      current_statement__ = 40;
       assign(p, cons_list(index_uni(3), nil_index_list()), 0.0,
         "assigning variable p");
     } else {
-      current_statement__ = 34;
+      current_statement__ = 37;
       if (logical_eq(g, 1)) {
-        current_statement__ = 30;
+        current_statement__ = 33;
         assign(p, cons_list(index_uni(1), nil_index_list()), 0.5,
           "assigning variable p");
-        current_statement__ = 31;
+        current_statement__ = 34;
         assign(p, cons_list(index_uni(2), nil_index_list()), 0.5,
           "assigning variable p");
-        current_statement__ = 32;
+        current_statement__ = 35;
         assign(p, cons_list(index_uni(3), nil_index_list()), 0,
           "assigning variable p");
       } else {
-        current_statement__ = 29;
+        current_statement__ = 32;
         if (logical_eq(g, 2)) {
-          current_statement__ = 25;
+          current_statement__ = 28;
           assign(p, cons_list(index_uni(1), nil_index_list()),
             (0.25 * (1 - xi)), "assigning variable p");
-          current_statement__ = 26;
+          current_statement__ = 29;
           assign(p, cons_list(index_uni(2), nil_index_list()),
             (0.5 * (1 + xi)), "assigning variable p");
-          current_statement__ = 27;
+          current_statement__ = 30;
           assign(p, cons_list(index_uni(3), nil_index_list()),
             (0.25 * (1 - xi)), "assigning variable p");
         } else {
-          current_statement__ = 24;
+          current_statement__ = 27;
           if (logical_eq(g, 3)) {
-            current_statement__ = 20;
+            current_statement__ = 23;
             assign(p, cons_list(index_uni(1), nil_index_list()), 0,
               "assigning variable p");
-            current_statement__ = 21;
+            current_statement__ = 24;
             assign(p, cons_list(index_uni(2), nil_index_list()), 0.5,
               "assigning variable p");
-            current_statement__ = 22;
+            current_statement__ = 25;
             assign(p, cons_list(index_uni(3), nil_index_list()), 0.5,
               "assigning variable p");
           } else {
-            current_statement__ = 19;
+            current_statement__ = 22;
             if (logical_eq(g, 4)) {
-              current_statement__ = 15;
+              current_statement__ = 18;
               assign(p, cons_list(index_uni(1), nil_index_list()), 0.0,
                 "assigning variable p");
-              current_statement__ = 16;
+              current_statement__ = 19;
               assign(p, cons_list(index_uni(2), nil_index_list()), 0.0,
                 "assigning variable p");
-              current_statement__ = 17;
+              current_statement__ = 20;
               assign(p, cons_list(index_uni(3), nil_index_list()), 1.0,
                 "assigning variable p");
             } else {
@@ -208,7 +211,7 @@ segfreq4(const T0__& xi, const int& g, std::ostream* pstream__) {
         }
       }
     }
-    current_statement__ = 40;
+    current_statement__ = 43;
     return p;
   } catch (const std::exception& e) {
     stan::lang::rethrow_located(e, locations_array__[current_statement__]);
@@ -240,34 +243,34 @@ convolve(const T0__& p1_arg__, const T1__& p2_arg__, const int& K,
   (void) DUMMY_VAR__;  // suppress unused var warning
   
   try {
-    current_statement__ = 42;
+    current_statement__ = 45;
     validate_non_negative_index("q", "K + 1", (K + 1));
     Eigen::Matrix<local_scalar_t__, -1, 1> q;
     q = Eigen::Matrix<local_scalar_t__, -1, 1>((K + 1));
     stan::math::fill(q, DUMMY_VAR__);
     
-    current_statement__ = 51;
+    current_statement__ = 54;
     for (int k = 1; k <= (K + 1); ++k) {
       int iup;
       iup = std::numeric_limits<int>::min();
       
-      current_statement__ = 44;
+      current_statement__ = 47;
       iup = std::min((k - 1), (khalf - 1));
       int ilo;
       ilo = std::numeric_limits<int>::min();
       
-      current_statement__ = 45;
+      current_statement__ = 48;
       ilo = std::max(0, (k - khalf));
-      current_statement__ = 46;
+      current_statement__ = 49;
       assign(q, cons_list(index_uni(k), nil_index_list()), 0.0,
         "assigning variable q");
-      current_statement__ = 49;
+      current_statement__ = 52;
       for (int i = ilo; i <= iup; ++i) {
-        current_statement__ = 47;
+        current_statement__ = 50;
         assign(q, cons_list(index_uni(k), nil_index_list()),
           (q[(k - 1)] + (p1[((i + 1) - 1)] * p2[((k - i) - 1)])),
           "assigning variable q");}}
-    current_statement__ = 52;
+    current_statement__ = 55;
     return q;
   } catch (const std::exception& e) {
     stan::lang::rethrow_located(e, locations_array__[current_statement__]);
@@ -292,6 +295,7 @@ private:
   std::vector<int> x;
   int g1;
   int g2;
+  double mixprop;
  
 public:
   ~model_marg_ndr_pp_g4() { }
@@ -319,45 +323,58 @@ public:
       pos__ = std::numeric_limits<int>::min();
       
       pos__ = 1;
-      current_statement__ = 10;
+      current_statement__ = 12;
       context__.validate_dims("data initialization","x","int",
           context__.to_vec(5));
       x = std::vector<int>(5, std::numeric_limits<int>::min());
       
-      current_statement__ = 10;
+      current_statement__ = 12;
       assign(x, nil_index_list(), context__.vals_i("x"),
         "assigning variable x");
-      current_statement__ = 10;
+      current_statement__ = 12;
       for (int sym1__ = 1; sym1__ <= 5; ++sym1__) {
-        current_statement__ = 10;
-        current_statement__ = 10;
+        current_statement__ = 12;
+        current_statement__ = 12;
         check_greater_or_equal(function__, "x[sym1__]", x[(sym1__ - 1)], 0);}
-      current_statement__ = 11;
+      current_statement__ = 13;
       context__.validate_dims("data initialization","g1","int",
           context__.to_vec());
       g1 = std::numeric_limits<int>::min();
       
-      current_statement__ = 11;
+      current_statement__ = 13;
       g1 = context__.vals_i("g1")[(1 - 1)];
-      current_statement__ = 11;
-      current_statement__ = 11;
+      current_statement__ = 13;
+      current_statement__ = 13;
       check_greater_or_equal(function__, "g1", g1, 0);
-      current_statement__ = 11;
-      current_statement__ = 11;
+      current_statement__ = 13;
+      current_statement__ = 13;
       check_less_or_equal(function__, "g1", g1, 4);
-      current_statement__ = 12;
+      current_statement__ = 14;
       context__.validate_dims("data initialization","g2","int",
           context__.to_vec());
       g2 = std::numeric_limits<int>::min();
       
-      current_statement__ = 12;
+      current_statement__ = 14;
       g2 = context__.vals_i("g2")[(1 - 1)];
-      current_statement__ = 12;
-      current_statement__ = 12;
+      current_statement__ = 14;
+      current_statement__ = 14;
       check_greater_or_equal(function__, "g2", g2, 0);
-      current_statement__ = 12;
-      current_statement__ = 12;
+      current_statement__ = 14;
+      current_statement__ = 14;
       check_less_or_equal(function__, "g2", g2, 4);
+      current_statement__ = 15;
+      context__.validate_dims("data initialization","mixprop","double",
+          context__.to_vec());
+      mixprop = std::numeric_limits<double>::quiet_NaN();
+      
+      current_statement__ = 15;
+      mixprop = context__.vals_r("mixprop")[(1 - 1)];
+      current_statement__ = 15;
+      current_statement__ = 15;
+      check_greater_or_equal(function__, "mixprop", mixprop, 0.0);
+      current_statement__ = 15;
+      current_statement__ = 15;
+      check_less_or_equal(function__, "mixprop", mixprop, 1.0);
     } catch (const std::exception& e) {
       stan::lang::rethrow_located(e, locations_array__[current_statement__]);
       // Next line prevents compiler griping about no return
@@ -414,18 +431,29 @@ public:
         q = Eigen::Matrix<local_scalar_t__, -1, 1>(5);
         stan::math::fill(q, DUMMY_VAR__);
         
+        Eigen::Matrix<local_scalar_t__, -1, 1> u;
+        u = Eigen::Matrix<local_scalar_t__, -1, 1>(5);
+        stan::math::fill(u, DUMMY_VAR__);
+        
         current_statement__ = 5;
+        assign(u, nil_index_list(), (Eigen::Matrix<double,-1,1>(5) << 0.2,
+          0.2, 0.2, 0.2, 0.2).finished(), "assigning variable u");
+        current_statement__ = 6;
         assign(p1, nil_index_list(), segfreq4(xi, g1, pstream__),
           "assigning variable p1");
-        current_statement__ = 6;
+        current_statement__ = 7;
         assign(p2, nil_index_list(), segfreq4(xi, g2, pstream__),
           "assigning variable p2");
-        current_statement__ = 7;
+        current_statement__ = 8;
         assign(q, nil_index_list(), convolve(p1, p2, 4, 3, pstream__),
           "assigning variable q");
-        current_statement__ = 8;
-        lp_accum__.add(beta_lpdf<false>(xi, 1.0, 2.0));
         current_statement__ = 9;
+        assign(q, nil_index_list(),
+          add(multiply((1.0 - mixprop), stan::model::deep_copy(q)),
+            multiply(mixprop, u)), "assigning variable q");
+        current_statement__ = 10;
+        lp_accum__.add(beta_lpdf<false>(xi, 1.0, 2.0));
+        current_statement__ = 11;
         lp_accum__.add(multinomial_lpmf<false>(x, q));
       }
     } catch (const std::exception& e) {
