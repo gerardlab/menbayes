@@ -2,24 +2,10 @@
 ## Methods when genotypes are known
 ###################
 
-#' Marginal likelihood under alternative when genotypes are known
+#' Stan version of marg_alt_g(). Not to be used.
 #'
-#' @param x The genotype counts
-#' @param beta The prior hyperparameters
-#' @param lg A logical. Should we log the marginal likelihood or not?
-#' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
-#'
-#' @return The mariginal likelihood.
-#'
-#' @author David Gerard
-#'
-#' @examples
-#' x <- c(1, 2, 7, 3, 3)
-#' beta <- rep(1, 5)
-#' marg_alt_g(x = x, beta = beta, chains = 1)
-#'
-#' @export
-marg_alt_g <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
+#' @noRd
+marg_alt_g_stan <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
   ploidy <- length(x) - 1
   stopifnot(length(x) == length(beta))
   stan_dat <- list(K = ploidy, x = x, beta = beta)
@@ -38,94 +24,116 @@ marg_alt_g <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
   return(mx)
 }
 
-#' Marginal likelihood in F1 population of tetraploids
+#' Density of dirichlet-multinomial
 #'
-#' Use this if the offspring genotypes are known, but the parental
-#' genotypes are **not** known.
+#' @param x the counts
+#' @param alpha the dirichlet parameters
+#' @param lg should we log marginal likelihood?
 #'
-#' @inheritParams marg_alt_g
-#' @param p1_gl A vector of parent 1's genotype log-likelihoods.
-#' @param p2_gl A vector of parent 2's genotype log-likelihoods.
-#' @param mixprop Mixing proportion with uniform to avoid
-#'     numerical issues in stan.
+#' @noRd
+ddirmult <- function (x, alpha, lg = FALSE)
+{
+    stopifnot(length(x) == length(alpha))
+    stopifnot(all(alpha > 0))
+    asum <- sum(alpha)
+    n <- sum(x)
+    ll <- lgamma(asum) +
+      lgamma(n + 1) -
+      lgamma(n + asum) +
+      sum(lgamma(x + alpha)) -
+      sum(lgamma(alpha)) -
+      sum(lgamma(x + 1))
+    if (!lg) {
+        ll <- exp(ll)
+    }
+    return(ll)
+}
+
+#' Marginal likelihood under alternative when genotypes are known
 #'
-#' @author David Gerard
+#' @param x The genotype counts
+#' @param beta The prior hyperparameters
+#' @param lg A logical. Should we log the marginal likelihood or not?
+#' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
+#'
+#' @return The marginal likelihood.
+#'
+#' @author Mira Thakkar and David Gerard
 #'
 #' @examples
-#' set.seed(1)
-#' q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
-#' q <- runif(5)
-#' q <- q / sum(q)
-#' x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
-#' p1_gl <- rep(log(0.2), 5)
-#' p2_gl <- rep(log(0.2), 5)
-#' mixprop <- 0.001
-#' malt <- hwep:::ddirmult(x = x, alpha = rep(1, 5), lg = TRUE)
-#' mnull <- marg_f1_g4(x,
-#'                     chains = 1,
-#'                     p1_gl = c(-10, -10, -1, -10, -10),
-#'                     p2_gl = c(-10, -10, -1, -10, -10))
-#' mnull - malt
+#' x <- c(3L, 21L, 52L, 20L, 4L)
+#' marg_alt_g(x = x, chains = 1)
 #'
 #' @export
-marg_f1_g4 <- function(x,
-                       p1_gl = rep(log(0.2), 5),
-                       p2_gl = rep(log(0.2), 5),
-                       mixprop = 0.001,
-                       lg = TRUE, ...) {
-  stopifnot(length(x) == 5,
-            length(p1_gl) == 5,
-            length(p2_gl) == 5,
-            length(mixprop) == 1)
-  stopifnot(mixprop > 0, mixprop <= 1)
-  drbound <- hwep::drbounds(ploidy = 4)
-  stan_dat <- list(x = x,
-                   drbound = drbound,
-                   p1_gl = p1_gl,
-                   p2_gl = p2_gl,
-                   mixprop = mixprop)
-  stan_out <- rstan::sampling(object = stanmodels$f1_g4,
-                              data = stan_dat,
-                              verbose = FALSE,
-                              show_messages = FALSE,
-                              ...)
-  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
-
-  if (lg) {
-    mx <- bridge_out$logml
-  } else {
-    mx <- exp(bridge_out$logml)
-  }
+marg_alt_g <- function(x, beta = rep(1, length(x)), lg = TRUE, ...) {
+  ploidy <- length(x) - 1
+  stopifnot(length(x) == length(beta))
+  mx <- ddirmult(x = x, alpha = beta, lg = lg)
   return(mx)
 }
 
+#' Marginal likelihood, no double reduction, no preferential pairing, genotypes known.
+#'
+#' @inheritParams marg_f1_dr_pp_g4
+#'
+#' @author Mira Thakkar and David Gerard
+#'
+#' @export
+#'
+#' @examples
+#' x <- c(3L, 21L, 52L, 20L, 4L) ## simulated via null
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_ndr_npp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+#' x <- c(25L, 24L, 20L, 15L, 16L) ## simulated via alt
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_ndr_npp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+marg_f1_ndr_npp_g4 <- function(x,
+                               g1,
+                               g2,
+                               lg = TRUE) {
+  gf <- offspring_gf(alpha = 0, xi = 1/3, p1 = g1, p2 = g2)
+  return(stats::dmultinom(x = x, prob = gf, log = lg))
+}
 
-#' Marginal likelihood in tetraploid F1 population
+#' Marginal likelihood, double reduction, no preferential pairing, genotypes known.
 #'
 #' Here, parental genotypes are known.
 #'
-#' @inheritParams marg_f1_g4
-#' @param g1 The first parent's genotype.
-#' @param g2 The second parent's gentoype.
+#' @inheritParams marg_f1_dr_pp_g4
 #'
-#' @author David Gerard
+#' @author Mira Thakkar and David Gerard
 #'
 #' @examples
-#' q <- hwep::zygdist(alpha = 0.1, G1 = 2, G2 = 2, ploidy = 4)
-#' q <- runif(5)
-#' q <- q / sum(q)
-#' x <- c(stats::rmultinom(n = 1, size = 1000, prob = q))
+#' x <- c(3L, 21L, 52L, 20L, 4L) ## simulated via null
 #' g1 <- 2
 #' g2 <- 2
-#' marg_null <- marg_f1_g4_pknown(x = x, g1 = g1, g2 = g2, chains = 1)
-#' marg_alt <- hwep:::ddirmult(x = x, alpha = rep(1, 5), lg = TRUE)
-#' marg_null - marg_alt
+#' mnull <- marg_f1_dr_npp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+#' x <- c(25L, 24L, 20L, 15L, 16L) ## simulated via alt
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_dr_npp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
 #'
 #' @export
-marg_f1_g4_pknown <- function(x,
+marg_f1_dr_npp_g4 <- function(x,
                               g1,
                               g2,
-                              lg = TRUE, ...) {
+                              mixprop = 0.001,
+                              lg = TRUE,
+                              output = c("marg", "all"),
+                              ...) {
   stopifnot(length(x) == 5,
             length(g1) == 1,
             length(g2) == 1)
@@ -134,8 +142,9 @@ marg_f1_g4_pknown <- function(x,
   stan_dat <- list(x = x,
                    drbound = drbound,
                    g1 = g1,
-                   g2 = g2)
-  stan_out <- rstan::sampling(object = stanmodels$f1_g4_pknown,
+                   g2 = g2,
+                   mixprop = mixprop)
+  stan_out <- rstan::sampling(object = stanmodels$marg_dr_npp_g4,
                               data = stan_dat,
                               verbose = FALSE,
                               show_messages = FALSE,
@@ -147,5 +156,197 @@ marg_f1_g4_pknown <- function(x,
   } else {
     mx <- exp(bridge_out$logml)
   }
-  return(mx)
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
+
+}
+
+#' Marginal likelihood, no double reduction, preferential pairing, genotypes known.
+#'
+#' @inheritParams marg_f1_dr_pp_g4
+#'
+#' @author Mira Thakkar and David Gerard
+#'
+#' @examples
+#' x <- c(3L, 21L, 52L, 20L, 4L) ## simulated via null
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_ndr_pp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+#' x <- c(25L, 24L, 20L, 15L, 16L) ## simulated via alt
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_ndr_pp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+#' @export
+#'
+marg_f1_ndr_pp_g4 <- function(x,
+                              g1,
+                              g2,
+                              mixprop = 0.001,
+                              lg = TRUE,
+                              output = c("marg", "all"),
+                              ...) {
+  stopifnot(length(x) == 5,
+            length(g1) == 1,
+            length(g2) == 1)
+  stopifnot(g1 >= 0, g1 <= 4, g2 >= 0, g2 <= 4)
+  stan_dat <- list(x = x,
+                   g1 = g1,
+                   g2 = g2,
+                   mixprop = mixprop)
+  stan_out <- rstan::sampling(object = stanmodels$marg_ndr_pp_g4,
+                              data = stan_dat,
+                              verbose = FALSE,
+                              show_messages = FALSE,
+                              ...)
+  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
+
+  if (lg) {
+    mx <- bridge_out$logml
+  } else {
+    mx <- exp(bridge_out$logml)
+  }
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
+}
+
+#' Marginal likelihood in tetraploid F1 population
+#'
+#' Here, parental genotypes are known.
+#'
+#' @param x The genotype counts of the offspring. \code{x[i]} is the
+#'     number of offspring with genotype \code{i-1}.
+#' @param g1 The first parent's genotype.
+#' @param g2 The second parent's genotype.
+#' @param mixprop The mixing proportion with the uniform for mixing purposes.
+#' @param lg A logical. Should we log the marginal likelihood (\code{TRUE})
+#'     or not (\code{FALSE})?
+#' @param output Return either the marginal likelihood with (\code{"marg"})
+#'    or the full STAN output with (\code{"all"}).
+#' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
+#'
+#' @author Mira Thakkar and David Gerard
+#'
+#' @examples
+#' x <- c(3L, 21L, 52L, 20L, 4L) ## simulated via null
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_dr_pp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+#' x <- c(25L, 24L, 20L, 15L, 16L) ## simulated via alt
+#' g1 <- 2
+#' g2 <- 2
+#' mnull <- marg_f1_dr_pp_g4(x = x, g1 = g1, g2 = g2)
+#' malt <- -15.34 ## output of marg_alt_g(x = x)
+#' mnull - malt ## log-BF
+#'
+#' @export
+marg_f1_dr_pp_g4 <- function(x,
+                             g1,
+                             g2,
+                             mixprop = 0.001,
+                             lg = TRUE,
+                             output = c("marg", "all"),
+                             ...) {
+  stopifnot(length(x) == 5,
+            length(g1) == 1,
+            length(g2) == 1)
+  stopifnot(g1 >= 0, g1 <= 4, g2 >= 0, g2 <= 4)
+  drbound <- hwep::drbounds(ploidy = 4)
+  stan_dat <- list(x = x,
+                   drbound = drbound,
+                   g1 = g1,
+                   g2 = g2,
+                   mixprop = mixprop)
+  stan_out <- rstan::sampling(object = stanmodels$marg_dr_pp_g4,
+                              data = stan_dat,
+                              verbose = FALSE,
+                              show_messages = FALSE,
+                              ...)
+  bridge_out <- bridgesampling::bridge_sampler(stan_out, verbose = FALSE, silent = TRUE)
+
+  if (lg) {
+    mx <- bridge_out$logml
+  } else {
+    mx <- exp(bridge_out$logml)
+  }
+
+  samps <- as.data.frame(stan_out)
+  all <- list(mx, samps)
+
+  output <- match.arg(output)
+  if (output == "marg") {
+    return(mx)
+  } else {
+    return(all)
+  }
+}
+
+#' Chi Square test when genotypes are known
+#'
+#' @param y Vector of observed genotype counts
+#' @param l1 Parent 1's genotype
+#' @param l2 Parent 2's genotype
+#'
+#' @return The Chi Square statistic and p-value
+#'
+#' @author Mira Thakkar and David Gerard
+#'
+#' @examples
+#' y <- c(1, 2, 4, 3, 0)
+#' l1 <- 2
+#' l2 <- 2
+#' chisq_g4(y, l1, l2)
+#'
+#' y <- c(10, 25, 10, 0, 0)
+#' l1 <- 1
+#' l2 <- 1
+#' chisq_g4(y, l1, l2)
+#'
+#' @export
+chisq_g4 <- function(y, l1, l2){
+  TOL <- sqrt(.Machine$double.eps)
+  gf <- menbayes::offspring_gf(alpha = 0, xi = 1/3, p1 = l1, p2 = l2)
+  which_zero <- gf < TOL
+  gf[which_zero] <- 0
+
+  if (sum(y[which_zero]) > 0.5) { ## if any incompatibility, p-value is 0
+    ret <- list(statistic = Inf,
+                p_value = 0,
+                df = length(y) - 1)
+    return(ret)
+  } else {
+    y <- y[!which_zero]
+    gf <- gf[!which_zero]
+  }
+
+  chout <- stats::chisq.test(x = y, p = gf)
+  ret <- list(statistic = chout$statistic[[1]],
+              p_value = chout$p.value[[1]],
+              df = chout$parameter[[1]])
+  return(ret)
+
 }

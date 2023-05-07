@@ -1,29 +1,30 @@
 // Tetraploid F1 test
-// parental genotypes are known
+// No double reduction and preferential pairing
+// parental genotypes are known, offspring genotype likelihoods are used
 
 functions {
-  // alpha Double reduction rate
+  // xi Preferential pairing rate
   // g parent genotype
   // khalf ploidy / 2 + 1
   // return: gamete frequencies of a parent
-  vector segfreq4(real alpha, int g) {
+  vector segfreq4(real xi, int g) {
     vector[3] p;
     if (g == 0) {
       p[1] = 1.0;
       p[2] = 0.0;
       p[3] = 0.0;
     } else if (g == 1) {
-      p[1] = (2.0 + alpha) / 4.0;
-      p[2] = 2.0 * (1.0 - alpha) / 4.0;
-      p[3] = alpha / 4.0;
+      p[1] = 0.5;
+      p[2] = 0.5;
+      p[3] = 0.0;
     } else if (g == 2) {
-      p[1] = (1.0 + 2.0 * alpha) / 6.0;
-      p[2] = 4.0 * (1.0 - alpha) / 6.0;
-      p[3] = (1.0 + 2.0 * alpha) / 6.0;
+      p[1] = 0.25 * (1.0 - xi);
+      p[2] = 0.5 * (1.0 + xi);
+      p[3] = 0.25 * (1.0 - xi);
     } else if (g == 3) {
-      p[1] = alpha / 4.0;
-      p[2] = 2.0 * (1.0 - alpha) / 4.0;
-      p[3] = (2.0 + alpha) / 4.0;
+      p[1] = 0.0;
+      p[2] = 0.5;
+      p[3] = 0.5;
     } else if (g == 4) {
       p[1] = 0.0;
       p[2] = 0.0;
@@ -53,23 +54,28 @@ functions {
 }
 
 data {
-  int<lower=0> x[5]; // genotype counts
-  real<lower=0.0,upper=1.0> drbound; // upper bound of double reduction rate
+  int N;
+  matrix[N, 5] gl; // genotype log-likelihoods for offspring
   int<lower=0,upper=4> g1; // first parent genotype
   int<lower=0,upper=4> g2; // second parent genotype
+  real<lower=0.0,upper=1.0> mixprop; // mixing component with uniform
 }
 
 parameters {
-  real<lower=0,upper=drbound> alpha; // double reduction rate
+  real<lower=0,upper=1> xi; // preferential pairing rate
 }
 
 model {
   vector[3] p1;
   vector[3] p2;
   vector[5] q;
-  p1 = segfreq4(alpha, g1);
-  p2 = segfreq4(alpha, g2);
+  vector[5] u = [0.2, 0.2, 0.2, 0.2, 0.2]';
+  p1 = segfreq4(xi, g1);
+  p2 = segfreq4(xi, g2);
   q = convolve(p1, p2, 4, 3);
-  target += uniform_lpdf(alpha | 0.0, drbound);
-  target += multinomial_lpmf(x | q);
+  q = (1.0 - mixprop) * q + mixprop * u; // mixing to avoid gradient issues
+  target += beta_lpdf(xi | 1.0, 2.0);
+  for (ind in 1:N) {
+    target += log_sum_exp(to_vector(gl[ind]) + log(q));
+  }
 }
