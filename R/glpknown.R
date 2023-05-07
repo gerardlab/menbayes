@@ -195,7 +195,7 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
 #' @param output Should we return just the marginal likelihood (\code{"marg"})
 #'     or both the marginal likelihood and all of the output of Stan
 #'     (\code{"all"})?
-#' @param ... Additional paramters sent to \code{\link[rstan]{sampling}()}.
+#' @param ... Additional parameters sent to \code{\link[rstan]{sampling}()}.
 #'
 #' @examples
 #' ## null sims

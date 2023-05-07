@@ -33,7 +33,7 @@ not (\code{FALSE})?}
 or both the marginal likelihood and all of the output of Stan
 (\code{"all"})?}
 
-\item{...}{Additional paramters sent to \code{\link[rstan]{sampling}()}.}
+\item{...}{Additional parameters sent to \code{\link[rstan]{sampling}()}.}
 }
 \description{
 Marginal likelihood, no double reduction, preferential pairing, parent genotypes known, offspring genotypes unknown
