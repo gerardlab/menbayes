@@ -4,9 +4,17 @@
 \name{menbayes-package}
 \alias{menbayes}
 \alias{menbayes-package}
-\title{menbayes: Bayesian Tests for Mendelian Segregation in Autopolyploids}
+\title{menbayes: Bayesian Tests for Mendelian Segregation in Polyploids}
 \description{
-Provides a suite of methods for Bayesian tests for Mendelian segregation in experimental autopolyploid populations. This is under different assumptions of meiosis.
+Provides a suite of methods for Bayesian tests for Mendelian segregation in experimental polyploid populations (right now just for tetraploids). This is under different assumptions of meiosis. This material is based upon work supported by the National Science Foundation under Grant No. 2132247. The opinions, findings, and conclusions or recommendations expressed are those of the author and do not necessarily reflect the views of the National Science Foundation.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/gerardlab/menbayes}
+  \item Report bugs at \url{https://github.com/gerardlab/menbayes/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: David Gerard \email{gerard.1787@gmail.com} (\href{https://orcid.org/0000-0001-9450-5023}{ORCID})
@@ -14,6 +22,11 @@ Provides a suite of methods for Bayesian tests for Mendelian segregation in expe
 Authors:
 \itemize{
   \item Mira Thakkar \email{mt7562a@american.edu }
+}
+
+Other contributors:
+\itemize{
+  \item NSF DBI 2132247 (https://www.nsf.gov/awardsearch/showAward?AWD_ID=2132247) [funder]
 }
 
 }
