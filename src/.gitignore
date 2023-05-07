@@ -1,0 +1,7 @@
+*.o
+*.so
+*.h
+*.cc
+RcppExports.cpp
+Makevars
+Makevars.win

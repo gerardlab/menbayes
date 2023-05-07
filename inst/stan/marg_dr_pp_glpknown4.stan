@@ -15,17 +15,17 @@ functions {
       p[2] = 0.0;
       p[3] = 0.0;
     } else if (g == 1) {
-      p[1] = 0.5 + (0.25 * alpha);
-      p[2] = 0.5 - (0.5 * alpha);
-      p[3] = alpha / 4.0;
+      p[1] = 0.5 + 0.25 * alpha;
+      p[2] = 0.5 - 0.5 * alpha;
+      p[3] = 0.25 * alpha;
     } else if (g == 2) {
-      p[1] = (0.5 * alpha) + (0.25 * (1 - alpha) * (1 - xi));
-      p[2] = 0.5 * (1 - alpha) * (1 + xi);
-      p[3] = (0.5 * alpha) + (0.25 * (1 - alpha) * (1 - xi));
+      p[1] = 0.5 * alpha + 0.25 * (1.0 - alpha) * (1.0 - xi);
+      p[2] = 0.5 * (1.0 - alpha) * (1.0 + xi);
+      p[3] = 0.5 * alpha + 0.25 * (1.0 - alpha) * (1.0 - xi);
     } else if (g == 3) {
-      p[1] = alpha / 4.0;
-      p[2] = 0.5 - (0.5 * alpha);
-      p[3] = 0.5 + (0.25 * alpha);
+      p[1] = 0.25 * alpha;
+      p[2] = 0.5 - 0.5 * alpha;
+      p[3] = 0.5 + 0.25 * alpha;
     } else if (g == 4) {
       p[1] = 0.0;
       p[2] = 0.0;
