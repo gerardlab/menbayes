@@ -24,3 +24,15 @@ You can install the development version of menbayes from
 # install.packages("devtools")
 devtools::install_github("gerardlab/menbayes")
 ```
+
+## Code of Conduct
+
+Please note that the menbayes project is released with a [Contributor
+Code of
+Conduct](https://contributor-covenant.org/version/2/1/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
+
+## Acknowledgements
+
+This material is based upon work supported by the National Science
+Foundation under Grant No. 2132247.
