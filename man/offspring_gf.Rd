@@ -15,8 +15,6 @@ offspring_gf(alpha, xi, p1, p2)
 \item{p1}{The first parent's genotype}
 
 \item{p2}{The second parent's genotype}
-
-\item{...}{Additional arguments to pass to \code{\link[rstan]{sampling}()}.}
 }
 \value{
 Zygote genotype frequencies

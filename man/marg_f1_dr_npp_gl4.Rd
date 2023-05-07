@@ -20,14 +20,20 @@ individuals and the columns index the possible genotypes. So
 \code{gl[i, k]} is the genotype log-likelihood for individual i and
 genotype k-1.}
 
-\item{p1_gl}{The vector of genotype likelihoods of parent 2.}
+\item{p1_gl}{The vector of genotype likelihoods of parent 1.}
+
+\item{p2_gl}{The vector of genotype likelihoods of parent 2.}
 
 \item{mixprop}{The mixing proportion with the uniform for mixing purposes.}
 
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE})
 or not (\code{FALSE})?}
 
-\item{...}{Additional parameters sent to \code{\link[stan]{sampling}()}.}
+\item{output}{Should we return just the marginal likelihood (\code{"marg"})
+or both the marginal likelihood and all of the output of Stan
+(\code{"all"})?}
+
+\item{...}{Additional parameters sent to \code{\link[rstan]{sampling}()}.}
 }
 \description{
 Marginal likelihood, double reduction, no preferential pairing, genotype likelihoods.
@@ -41,7 +47,11 @@ gcount <- offspring_geno(x = gf, n = 20)
 gvec <- gcount_to_gvec(gcount)
 fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 gl <- fout$genologlike
-mnull <- marg_f1_dr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+mnull <- marg_f1_dr_npp_gl4(
+    gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+    p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+    chains = 1
+    )
 malt <- -48.81 ## result of running marg_alt_gl(gl)
 mnull - malt ## log-BF
 
@@ -50,7 +60,12 @@ set.seed(1)
 gvec <- rep(0:4, each = 4)
 fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 gl <- fout$genologlike
-mnull <- marg_f1_dr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+mnull <- marg_f1_dr_npp_gl4(
+    gl = gl,
+    p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+    p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+    chains = 1
+    )
 malt <- -46.82 ## result of running marg_alt_gl(gl)
 mnull - malt ## log-BF
 }

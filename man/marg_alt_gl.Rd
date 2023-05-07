@@ -17,7 +17,7 @@ genotype k-1.}
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE})
 or not (\code{FALSE})?}
 
-\item{...}{Additional parameters sent to \code{\link[stan]{sampling}()}.}
+\item{...}{Additional parameters sent to \code{\link[rstan]{sampling}()}.}
 }
 \value{
 The marginal likelihood.

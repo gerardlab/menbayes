@@ -12,8 +12,6 @@ pvec(a, x, p)
 \item{x}{The preferential pairing parameter}
 
 \item{p}{The}
-
-\item{...}{Additional arguments to pass to \code{\link[rstan]{sampling}()}.}
 }
 \value{
 The gamete genotype frequency

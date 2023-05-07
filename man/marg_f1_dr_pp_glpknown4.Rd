@@ -29,7 +29,11 @@ genotype k-1.}
 \item{lg}{A logical. Should we log the marginal likelihood (\code{TRUE}) or
 not (\code{FALSE})?}
 
-\item{...}{Additional paramters sent to \code{\link[stan]{sampling}()}.}
+\item{output}{Should we return just the marginal likelihood (\code{"marg"})
+or both the marginal likelihood and all of the output of Stan
+(\code{"all"})?}
+
+\item{...}{Additional paramters sent to \code{\link[rstan]{sampling}()}.}
 }
 \description{
 Marginal likelihood, double reduction, preferential pairing, parent genotypes known, offspring genotypes unknown

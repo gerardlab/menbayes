@@ -3,7 +3,6 @@
 #' @param a The double reduction rate
 #' @param x The preferential pairing parameter
 #' @param p The
-#' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
 #'
 #' @return The gamete genotype frequency
 #'
@@ -51,7 +50,6 @@ pvec <- function(a, x, p){
 #' @param xi The preferential pairing parameter
 #' @param p1 The first parent's genotype
 #' @param p2 The second parent's genotype
-#' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
 #'
 #' @return Zygote genotype frequencies
 #'
@@ -93,8 +91,6 @@ offspring_gf <- function(alpha, xi, p1, p2){
 #'
 #' @examples
 #' x <- offspring_gf(alpha = 1/6, xi = 1/3, p1 = 2, p2 = 3)
-#' n <- 1000
-#' pvec(x = x, n = n)
 #'
 #' @export
 offspring_geno <- function(x, n){

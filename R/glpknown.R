@@ -192,7 +192,10 @@ marg_f1_ndr_pp_glpknown4 <- function(gl,
 #' @param mixprop The mixing proportion with the uniform for mixing purposes.
 #' @param lg A logical. Should we log the marginal likelihood (\code{TRUE}) or
 #'     not (\code{FALSE})?
-#' @param ... Additional paramters sent to \code{\link[stan]{sampling}()}.
+#' @param output Should we return just the marginal likelihood (\code{"marg"})
+#'     or both the marginal likelihood and all of the output of Stan
+#'     (\code{"all"})?
+#' @param ... Additional paramters sent to \code{\link[rstan]{sampling}()}.
 #'
 #' @examples
 #' ## null sims

@@ -21,8 +21,6 @@ genotype frequencies and a sample size and returns simulated genotypes.
 }
 \examples{
 x <- offspring_gf(alpha = 1/6, xi = 1/3, p1 = 2, p2 = 3)
-n <- 1000
-pvec(x = x, n = n)
 
 }
 \author{

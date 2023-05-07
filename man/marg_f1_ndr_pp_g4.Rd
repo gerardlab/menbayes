@@ -30,7 +30,7 @@ or not (\code{FALSE})?}
 \item{output}{Return either the marginal likelihood with (\code{"marg"})
 or the full STAN output with (\code{"all"}).}
 
-\item{...}{Additional arguments to pass to \code{\link[stan]{sampling}()}.}
+\item{...}{Additional arguments to pass to \code{\link[rstan]{sampling}()}.}
 }
 \description{
 Marginal likelihood, no double reduction, preferential pairing, genotypes known.

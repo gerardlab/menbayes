@@ -50,7 +50,11 @@ marg_alt_gl <- function(gl, beta = rep(1, 5), lg = TRUE, ...) {
 #' gvec <- gcount_to_gvec(gcount)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_ndr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf))
+#' mnull <- marg_f1_ndr_npp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf)
+#'     )
 #' malt <- -48.81 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #'
@@ -59,7 +63,11 @@ marg_alt_gl <- function(gl, beta = rep(1, 5), lg = TRUE, ...) {
 #' gvec <- rep(0:4, each = 4)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_ndr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf))
+#' mnull <- marg_f1_ndr_npp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf)
+#'     )
 #' malt <- -46.82 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #'
@@ -84,21 +92,11 @@ marg_f1_ndr_npp_gl4 <- function(gl,
         p2_gl[[j + 1]]
     }
   }
-  if (lg) {
-    mx <- bridge_out$logml
-  } else {
-    mx <- exp(bridge_out$logml)
+  mx <- updog::log_sum_exp(glmat)
+  if (!lg) {
+    mx <- exp(mx)
   }
-
-  samps <- as.data.frame(stan_out)
-  all <- list(mx, samps)
-
-  output <- match.arg(output)
-  if (output == "marg") {
-    return(mx)
-  } else {
-    return(all)
-  }
+  return(mx)
 }
 
 #' Marginal likelihood, double reduction, no preferential pairing, genotype likelihoods.
@@ -116,7 +114,11 @@ marg_f1_ndr_npp_gl4 <- function(gl,
 #' gvec <- gcount_to_gvec(gcount)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_dr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' mnull <- marg_f1_dr_npp_gl4(
+#'     gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     chains = 1
+#'     )
 #' malt <- -48.81 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #'
@@ -125,7 +127,12 @@ marg_f1_ndr_npp_gl4 <- function(gl,
 #' gvec <- rep(0:4, each = 4)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_dr_npp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' mnull <- marg_f1_dr_npp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     chains = 1
+#'     )
 #' malt <- -46.82 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #' }
@@ -191,7 +198,12 @@ marg_f1_dr_npp_gl4 <- function(gl,
 #' gvec <- gcount_to_gvec(gcount)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_ndr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' mnull <- marg_f1_ndr_pp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     chains = 1
+#'     )
 #' malt <- -48.81 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #'
@@ -200,7 +212,12 @@ marg_f1_dr_npp_gl4 <- function(gl,
 #' gvec <- rep(0:4, each = 4)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_ndr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' mnull <- marg_f1_ndr_pp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     chains = 1
+#'     )
 #' malt <- -46.82 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #' }
@@ -256,11 +273,14 @@ marg_f1_ndr_pp_gl4 <- function(gl,
 #'     \code{gl[i, k]} is the genotype log-likelihood for individual i and
 #'     genotype k-1.
 #' @param p1_gl The vector of genotype likelihoods of parent 1.
-#' @param p1_gl The vector of genotype likelihoods of parent 2.
+#' @param p2_gl The vector of genotype likelihoods of parent 2.
 #' @param mixprop The mixing proportion with the uniform for mixing purposes.
 #' @param lg A logical. Should we log the marginal likelihood (\code{TRUE})
 #'     or not (\code{FALSE})?
-#' @param ... Additional parameters sent to \code{\link[stan]{sampling}()}.
+#' @param output Should we return just the marginal likelihood (\code{"marg"})
+#'     or both the marginal likelihood and all of the output of Stan
+#'     (\code{"all"})?
+#' @param ... Additional parameters sent to \code{\link[rstan]{sampling}()}.
 #'
 #' @author Mira Thakkar and David Gerard
 #'
@@ -273,7 +293,12 @@ marg_f1_ndr_pp_gl4 <- function(gl,
 #' gvec <- gcount_to_gvec(gcount)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_dr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' mnull <- marg_f1_dr_pp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     chains = 1
+#'     )
 #' malt <- -48.81 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #'
@@ -282,7 +307,12 @@ marg_f1_ndr_pp_gl4 <- function(gl,
 #' gvec <- rep(0:4, each = 4)
 #' fout <- po_gl(genovec = gvec, p1_geno = 2, p2_geno = 2, ploidy = 4)
 #' gl <- fout$genologlike
-#' mnull <- marg_f1_dr_pp_gl4(gl = gl, p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf), p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf), chains = 1)
+#' mnull <- marg_f1_dr_pp_gl4(
+#'     gl = gl,
+#'     p1_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     p2_gl = c(-Inf, -Inf, 0, -Inf, -Inf),
+#'     chains = 1
+#'     )
 #' malt <- -46.82 ## result of running marg_alt_gl(gl)
 #' mnull - malt ## log-BF
 #' }

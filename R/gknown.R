@@ -244,7 +244,7 @@ marg_f1_ndr_pp_g4 <- function(x,
 #'     or not (\code{FALSE})?
 #' @param output Return either the marginal likelihood with (\code{"marg"})
 #'    or the full STAN output with (\code{"all"}).
-#' @param ... Additional arguments to pass to \code{\link[stan]{sampling}()}.
+#' @param ... Additional arguments to pass to \code{\link[rstan]{sampling}()}.
 #'
 #' @author Mira Thakkar and David Gerard
 #'
