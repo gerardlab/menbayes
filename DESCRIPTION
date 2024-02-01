@@ -1,4 +1,4 @@
-Package: menbayes
+Package: menbayesAlpha
 Title: Bayesian Tests for Mendelian Segregation in Polyploids
 Version: 0.0.1
 Authors@R: 
@@ -18,11 +18,11 @@ Description: Provides a suite of methods for Bayesian tests for
     are those of the author and do not necessarily reflect the views
     of the National Science Foundation.
 License: GPL (>= 3)
-BugReports: https://github.com/gerardlab/menbayes/issues
-URL: https://github.com/gerardlab/menbayes
+BugReports: https://github.com/gerardlab/menbayesAlpha/issues
+URL: https://github.com/gerardlab/menbayesAlpha
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Biarch: true
 Depends: 
     R (>= 3.4.0)

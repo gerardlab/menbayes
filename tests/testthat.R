@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(menbayes)
+library(menbayesAlpha)
 
-test_check("menbayes")
+test_check("menbayesAlpha")

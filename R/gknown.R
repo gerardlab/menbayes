@@ -329,7 +329,7 @@ marg_f1_dr_pp_g4 <- function(x,
 #' @export
 chisq_g4 <- function(y, l1, l2){
   TOL <- sqrt(.Machine$double.eps)
-  gf <- menbayes::offspring_gf(alpha = 0, xi = 1/3, p1 = l1, p2 = l2)
+  gf <- menbayesAlpha::offspring_gf(alpha = 0, xi = 1/3, p1 = l1, p2 = l2)
   which_zero <- gf < TOL
   gf[which_zero] <- 0
 
